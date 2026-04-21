@@ -47,7 +47,7 @@ public class ProjectHandler implements HttpHandler {
                 case "DELETE" -> {
                     if (idStr == null) { HttpUtils.safeSendError(exchange, 400, "ID Required"); return; }
                     controller.delete(Integer.parseInt(idStr));
-                    HttpUtils.safeSendJson(exchange, 200, "{\"deleted\":true}");
+                    HttpUtils.safeSendJson(exchange, 200, "true");
                 }
                 default -> exchange.sendResponseHeaders(405, -1);
             }
@@ -61,10 +61,10 @@ public class ProjectHandler implements HttpHandler {
             String[] parts = path.split("/");
             int projectId = Integer.parseInt(parts[2]);
 
-            BigDecimal cost = controller.calculateHrCost(projectId);
+            Double cost = controller.calculateHrCost(projectId);
 
             String response = String.format("{\"projectId\":%d, \"hrCost\":%s}",
-                    projectId, cost.toPlainString());
+                    projectId, cost);
             HttpUtils.safeSendJson(exchange, 200, response);
 
         } catch (Exception e) {

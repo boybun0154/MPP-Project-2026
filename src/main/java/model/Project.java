@@ -1,6 +1,5 @@
 package model;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,11 +12,26 @@ public class Project {
     private String description;
     private LocalDate startDate;
     private LocalDate endDate;
-    private BigDecimal budget;
+    private Double budget;
     private String status;
-    private final Set<Department> departments = new HashSet<>();
-    private final Map<Employee, Integer> employeeAllocations = new HashMap<>();
-    private final Set<Client> clients = new HashSet<>();
+
+    private Set<Department> departments = new HashSet<>();
+    private Map<Employee, Integer> employeeAllocations = new HashMap<>();
+    private Set<Client> clients = new HashSet<>();
+
+    public Project() {
+    }
+
+    public Project(Integer id, String name, String description, LocalDate startDate,
+                   LocalDate endDate, Double budget, String status) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.budget = budget;
+        this.status = status;
+    }
 
     public Integer getId() {
         return id;
@@ -59,11 +73,11 @@ public class Project {
         this.endDate = endDate;
     }
 
-    public BigDecimal getBudget() {
+    public Double getBudget() {
         return budget;
     }
 
-    public void setBudget(BigDecimal budget) {
+    public void setBudget(Double budget) {
         this.budget = budget;
     }
 
@@ -79,11 +93,36 @@ public class Project {
         return departments;
     }
 
+    public void setDepartments(Set<Department> departments) {
+        this.departments = departments;
+    }
+
     public Map<Employee, Integer> getEmployeeAllocations() {
         return employeeAllocations;
     }
 
+    public void setEmployeeAllocations(Map<Employee, Integer> employeeAllocations) {
+        this.employeeAllocations = employeeAllocations;
+    }
+
     public Set<Client> getClients() {
         return clients;
+    }
+
+    public void setClients(Set<Client> clients) {
+        this.clients = clients;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Project project = (Project) o;
+        return id != null && id.equals(project.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

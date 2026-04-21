@@ -1,13 +1,10 @@
 package service;
 
 import model.Project;
+import model.Employee;
 import repository.interfaces.IRepository;
 import service.interfaces.IProjectService;
 
-import model.Employee;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
@@ -41,65 +38,52 @@ public class ProjectService implements IProjectService {
 
     @Override
     public Optional<Project> update(Integer id, Project entity) {
-        if (projectRepository.findById(id).isEmpty()) {
-            return Optional.empty();
-        }
-
-        entity.setId(id);
-
-        projectRepository.save(entity);
-
-        return Optional.of(entity);
+        return projectRepository.findById(id).map(existing -> {
+            entity.setId(id);
+            projectRepository.save(entity);
+            return entity;
+        });
     }
 
     @Override
     public void delete(Integer id) {
-        // Placeholder: IRepository currently has no delete contract.
+        projectRepository.delete(id);
     }
 
+
+    // Task 1: Cost Calculation
     @Override
-    public BigDecimal calculateProjectHRCost(int projectId) {
-        Project project = projectRepository.findById((int) projectId)
+    public Double calculateProjectHRCost(int projectId) {
+        Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new IllegalArgumentException("Project not found: " + projectId));
 
         long months = monthsBetweenRoundedUp(project.getStartDate(), project.getEndDate());
-        BigDecimal durationMonths = BigDecimal.valueOf(months);
+        double total = 0.0;
 
-        BigDecimal total = BigDecimal.ZERO;
         Map<Employee, Integer> allocations = project.getEmployeeAllocations();
-
-        if (allocations.isEmpty()) {
-            // Dummy fallback so the method returns a sensible value during demos.
-            BigDecimal dummyMonthlySalary = new BigDecimal("5000");
-            BigDecimal dummyAllocation = new BigDecimal("0.50");
-            return dummyMonthlySalary.multiply(durationMonths).multiply(dummyAllocation)
-                    .setScale(2, RoundingMode.HALF_UP);
-        }
+        if (allocations == null || allocations.isEmpty()) return 0.0;
 
         for (Map.Entry<Employee, Integer> entry : allocations.entrySet()) {
-            BigDecimal annualSalary = entry.getKey().getSalary() != null
-                    ? entry.getKey().getSalary()
-                    : new BigDecimal("60000");
-            BigDecimal monthlySalary = annualSalary.divide(BigDecimal.valueOf(12), 4, RoundingMode.HALF_UP);
-            BigDecimal allocationPct = BigDecimal.valueOf(entry.getValue())
-                    .divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP);
-            BigDecimal employeeCost = monthlySalary.multiply(durationMonths).multiply(allocationPct);
-            total = total.add(employeeCost);
+            double annualSalary = (entry.getKey().getSalary() != null) ? entry.getKey().getSalary() : 60000.0;
+            double monthlySalary = annualSalary / 12.0;
+            double allocationPct = entry.getValue() / 100.0;
+
+            total += (monthlySalary * months * allocationPct);
         }
-        return total.setScale(2, RoundingMode.HALF_UP);
+
+        return Math.round(total * 100.0) / 100.0;
     }
 
+
+    // Department delegates to Project to search the projects
     @Override
     public List<Project> getProjectsByDepartment(int departmentId, String sortBy) {
-        List<Project> projects = projectRepository.findAll().stream()
+        return projectRepository.findAll().stream()
                 .filter(p -> "Active".equalsIgnoreCase(p.getStatus()))
                 .filter(p -> p.getDepartments().stream()
                         .anyMatch(d -> d.getId() != null && d.getId() == departmentId))
+                .sorted(comparatorFor(sortBy))
                 .collect(Collectors.toList());
-
-        Comparator<Project> comparator = comparatorFor(sortBy);
-        projects.sort(comparator);
-        return projects;
     }
 
     private static long monthsBetweenRoundedUp(LocalDate start, LocalDate end) {
@@ -111,19 +95,13 @@ public class ProjectService implements IProjectService {
     }
 
     private static Comparator<Project> comparatorFor(String sortBy) {
-        if (sortBy == null) return Comparator.comparing(Project::getId, Comparator.nullsLast(Integer::compareTo));
-        switch (sortBy.toLowerCase()) {
-            case "project_budget":
-            case "budget":
-                return Comparator.comparing(Project::getBudget, Comparator.nullsLast(BigDecimal::compareTo));
-            case "end_date":
-                return Comparator.comparing(Project::getEndDate, Comparator.nullsLast(LocalDate::compareTo));
-            case "start_date":
-                return Comparator.comparing(Project::getStartDate, Comparator.nullsLast(LocalDate::compareTo));
-            case "name":
-                return Comparator.comparing(Project::getName, Comparator.nullsLast(String::compareToIgnoreCase));
-            default:
-                return Comparator.comparing(Project::getId, Comparator.nullsLast(Integer::compareTo));
-        }
+        if (sortBy == null) return Comparator.comparing(Project::getId);
+        return switch (sortBy.toLowerCase()) {
+            case "budget", "project_budget" -> Comparator.comparing(Project::getBudget, Comparator.nullsLast(Double::compareTo));
+            case "end_date" -> Comparator.comparing(Project::getEndDate, Comparator.nullsLast(LocalDate::compareTo));
+            case "start_date" -> Comparator.comparing(Project::getStartDate, Comparator.nullsLast(LocalDate::compareTo));
+            case "name" -> Comparator.comparing(Project::getName, Comparator.nullsLast(String::compareToIgnoreCase));
+            default -> Comparator.comparing(Project::getId);
+        };
     }
 }

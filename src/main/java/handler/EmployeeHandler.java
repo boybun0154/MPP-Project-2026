@@ -47,7 +47,7 @@ public class EmployeeHandler implements HttpHandler {
                 case "DELETE" -> {
                     if (idStr == null) { HttpUtils.safeSendError(exchange, 400, "ID Required"); return; }
                     controller.delete(Integer.parseInt(idStr));
-                    HttpUtils.safeSendJson(exchange, 200, "{\"deleted\":true}");
+                    HttpUtils.safeSendJson(exchange, 200, "true");
                 }
                 default -> exchange.sendResponseHeaders(405, -1);
             }

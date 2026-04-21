@@ -37,6 +37,7 @@ public class DepartmentController {
         service.delete(id);
     }
 
+    // Task 2: Department Project Report, delegation.
     public List<Project> getProjectsByDepartment(Integer departmentId, String sortBy) {
         return projectService.getProjectsByDepartment(departmentId, sortBy);
     }
