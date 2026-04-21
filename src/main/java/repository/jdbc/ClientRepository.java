@@ -1,6 +1,6 @@
 package repository.jdbc;
 
-import domain.Department;
+import model.Department;
 import repository.interfaces.IDepartmentRepository;
 
 import java.util.List;

@@ -2,23 +2,43 @@ package handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import controller.DepartmentController;
+import controller.EmployeeController;
 
 import java.io.IOException;
+import utils.HttpUtils;
 
 public class EmployeeHandler implements HttpHandler {
-    private final DepartmentController controller = new DepartmentController();
+    private final EmployeeController controller = new EmployeeController();
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String method = exchange.getRequestMethod();
+        String id = HttpUtils.extractId(exchange.getRequestURI().getPath(), "/employees");
 
         switch (method) {
             case "GET":
-//                controller.getAll(exchange);
+                if (id == null) {
+                    controller.getAll(exchange);
+                } else {
+                    controller.getById(exchange, id);
+                }
                 break;
             case "POST":
-//                controller.create(exchange);
+                controller.create(exchange);
+                break;
+            case "PUT":
+                if (id == null) {
+                    exchange.sendResponseHeaders(400, -1);
+                } else {
+                    controller.update(exchange, id);
+                }
+                break;
+            case "DELETE":
+                if (id == null) {
+                    exchange.sendResponseHeaders(400, -1);
+                } else {
+                    controller.delete(exchange, id);
+                }
                 break;
             default:
                 exchange.sendResponseHeaders(405, -1);
