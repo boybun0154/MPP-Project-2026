@@ -1,6 +1,6 @@
 package repository.interfaces;
 
-import domain.Client;
+import model.Client;
 
 public interface IClientRepository extends IRepository<Client> {
 }

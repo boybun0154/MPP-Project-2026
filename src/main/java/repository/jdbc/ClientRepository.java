@@ -1,6 +1,6 @@
 package repository.jdbc;
 
-import domain.Client;
+import model.Client;
 import repository.interfaces.IClientRepository;
 import repository.jdbc.core.DbClient;
 import repository.jdbc.core.RowMapper;
@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public class ClientRepository implements IClientRepository {
     @Override
-    public Optional<Client> findById(int id) {
+    public Optional<Client> findById(Integer id) {
         return DbClient.fetchOne(
                 "SELECT * FROM clients WHERE id = ?",
                 CLIENT_MAPPER,
@@ -25,6 +25,11 @@ public class ClientRepository implements IClientRepository {
 
     @Override
     public void save(Client entity) {
+
+    }
+
+    @Override
+    public void delete(Integer id) {
 
     }
 

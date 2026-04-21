@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IRepository<T> {
-    Optional<T> findById(int id);
+    Optional<T> findById(Integer id);
 
     List<T> findAll();
 
     void save(T entity);
+
+    void delete(Integer id);
 }

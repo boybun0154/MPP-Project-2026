@@ -1,6 +1,6 @@
 package repository.interfaces;
 
-import domain.Employee;
+import model.Employee;
 
 public interface IEmployeeRepository extends IRepository<Employee> {
 }

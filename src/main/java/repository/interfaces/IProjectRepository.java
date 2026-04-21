@@ -1,6 +1,6 @@
 package repository.interfaces;
 
-import domain.Project;
+import model.Project;
 
 public interface IProjectRepository extends IRepository<Project> {
 }

@@ -1,6 +1,7 @@
 package repository.jdbc;
 
-import domain.Project;
+
+import model.Project;
 import repository.interfaces.IProjectRepository;
 import repository.jdbc.core.DbClient;
 import repository.jdbc.core.RowMapper;
@@ -10,7 +11,7 @@ import java.util.Optional;
 
 public class ProjectRepository implements IProjectRepository {
     @Override
-    public Optional<Project> findById(int id) {
+    public Optional<Project> findById(Integer id) {
         return DbClient.fetchOne(
                 "SELECT * FROM clients WHERE id = ?",
                 PROJECT_MAPPER,
@@ -25,6 +26,11 @@ public class ProjectRepository implements IProjectRepository {
 
     @Override
     public void save(Project entity) {
+
+    }
+
+    @Override
+    public void delete(Integer id) {
 
     }
 

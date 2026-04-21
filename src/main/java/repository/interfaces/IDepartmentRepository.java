@@ -1,6 +1,6 @@
 package repository.interfaces;
 
-import domain.Department;
+import model.Department;
 
 public interface IDepartmentRepository extends IRepository<Department> {
 }

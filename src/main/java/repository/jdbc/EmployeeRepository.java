@@ -1,6 +1,6 @@
 package repository.jdbc;
 
-import domain.Employee;
+import model.Employee;
 import repository.interfaces.IEmployeeRepository;
 import repository.jdbc.core.DbClient;
 import repository.jdbc.core.RowMapper;
@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class EmployeeRepository implements IEmployeeRepository {
     @Override
-    public Optional<Employee> findById(int id) {
+    public Optional<Employee> findById(Integer id) {
         return DbClient.fetchOne(
                 "SELECT * FROM employees WHERE id = ?",
                 EMPLOYEE_MAPPER,
@@ -24,6 +24,11 @@ public class EmployeeRepository implements IEmployeeRepository {
 
     @Override
     public void save(Employee entity) {
+
+    }
+
+    @Override
+    public void delete(Integer id) {
 
     }
 
