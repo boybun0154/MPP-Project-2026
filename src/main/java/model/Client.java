@@ -2,15 +2,19 @@ package model;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Objects;
 
 public class Client {
     private Integer id;
     private String name;
     private String industry;
     private String primaryContactName;
-    private String primaryContactPhone;
-    private String primaryContactEmail;
-    private final Set<Project> projects = new HashSet<>();
+    private String phone;
+    private String email;
+    private Set<Project> projects = new HashSet<>();
+
+    public Client() {
+    }
 
     public Integer getId() {
         return id;
@@ -44,23 +48,40 @@ public class Client {
         this.primaryContactName = primaryContactName;
     }
 
-    public String getPrimaryContactPhone() {
-        return primaryContactPhone;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setPrimaryContactPhone(String primaryContactPhone) {
-        this.primaryContactPhone = primaryContactPhone;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getPrimaryContactEmail() {
-        return primaryContactEmail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPrimaryContactEmail(String primaryContactEmail) {
-        this.primaryContactEmail = primaryContactEmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Set<Project> getProjects() {
         return projects;
+    }
+
+    public void setProjects(Set<Project> projects) {
+        this.projects = projects;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Client client = (Client) o;
+        return Objects.equals(id, client.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

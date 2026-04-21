@@ -1,6 +1,5 @@
 package model;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,8 +9,21 @@ public class Employee {
     private String fullName;
     private String title;
     private LocalDate hireDate;
-    private BigDecimal salary;
+    private Double salary;
     private Department department;
+
+    public Employee() {
+    }
+
+    public Employee(Integer id, String fullName, String title, LocalDate hireDate, Double salary, Department department) {
+        this.id = id;
+        this.fullName = fullName;
+        this.title = title;
+        this.hireDate = hireDate;
+        this.salary = salary;
+        this.department = department;
+    }
+
     private final Map<Project, Integer> projectAllocationPercentages = new HashMap<>();
 
     public Integer getId() {
@@ -46,11 +58,11 @@ public class Employee {
         this.hireDate = hireDate;
     }
 
-    public BigDecimal getSalary() {
+    public Double getSalary() {
         return salary;
     }
 
-    public void setSalary(BigDecimal salary) {
+    public void setSalary(Double salary) {
         this.salary = salary;
     }
 

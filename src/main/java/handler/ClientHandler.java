@@ -7,7 +7,6 @@ import config.ServiceRegistry;
 import model.Client;
 import utils.HttpUtils;
 import utils.Json;
-
 import java.io.IOException;
 
 public class ClientHandler implements HttpHandler {
@@ -17,58 +16,44 @@ public class ClientHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         String method = exchange.getRequestMethod();
         String path = exchange.getRequestURI().getPath();
-        String idStr = HttpUtils.extractId(path, "/clients");
 
         try {
+            // Task 3 Route: GET /clients/upcoming-deadlines?days=30
             if ("GET".equals(method) && path.endsWith("/upcoming-deadlines")) {
                 int days = Integer.parseInt(HttpUtils.queryParams(exchange).getOrDefault("days", "30"));
-                HttpUtils.sendJson(exchange, 200, Json.ofList(controller.findByDeadline(days)));
+                HttpUtils.safeSendJson(exchange, 200, Json.ofList(controller.findByDeadline(days)));
                 return;
             }
 
+            String idStr = HttpUtils.extractId(path, "/clients");
+
             switch (method) {
                 case "GET" -> {
-                    if (idStr == null) HttpUtils.sendJson(exchange, 200, Json.ofList(controller.getAll()));
+                    if (idStr == null) HttpUtils.safeSendJson(exchange, 200, Json.ofList(controller.getAll()));
                     else controller.getById(Integer.parseInt(idStr))
-                            .ifPresentOrElse(c -> {
-                                        try {
-                                            HttpUtils.sendJson(exchange, 200, Json.of(c));
-                                        } catch (Exception e) {
-                                        }
-                                    },
-                                    () -> {
-                                        try {
-                                            HttpUtils.sendError(exchange, 404, "Not Found");
-                                        } catch (Exception e) {
-                                        }
-                                    });
+                            .ifPresentOrElse(c -> HttpUtils.safeSendJson(exchange, 200, Json.of(c)),
+                                    () -> HttpUtils.safeSendError(exchange, 404, "Client not found"));
                 }
                 case "POST" -> {
                     Client c = Json.fromJson(HttpUtils.readBody(exchange), Client.class);
-                    HttpUtils.sendJson(exchange, 201, Json.of(controller.create(c)));
+                    HttpUtils.safeSendJson(exchange, 201, Json.of(controller.create(c)));
                 }
                 case "PUT" -> {
-                    if (idStr == null) {
-                        HttpUtils.sendError(exchange, 400, "ID Required");
-                        return;
-                    }
-
-                    int id = Integer.parseInt(idStr);
-                    Client client = Json.fromJson(HttpUtils.readBody(exchange), Client.class);
-
-                    controller.update(id, client).ifPresentOrElse(
-                            updated -> HttpUtils.safeSendJson(exchange, 200, Json.of(updated)),
-                            () -> HttpUtils.safeSendError(exchange, 404, "Not Found")
-                    );
+                    if (idStr == null) { HttpUtils.safeSendError(exchange, 400, "ID Required"); return; }
+                    Client c = Json.fromJson(HttpUtils.readBody(exchange), Client.class);
+                    controller.update(Integer.parseInt(idStr), c)
+                            .ifPresentOrElse(updated -> HttpUtils.safeSendJson(exchange, 200, Json.of(updated)),
+                                    () -> HttpUtils.safeSendError(exchange, 404, "Client not found"));
                 }
                 case "DELETE" -> {
+                    if (idStr == null) { HttpUtils.safeSendError(exchange, 400, "ID Required"); return; }
                     controller.delete(Integer.parseInt(idStr));
-                    HttpUtils.sendJson(exchange, 200, "{\"deleted\":true}");
+                    HttpUtils.safeSendJson(exchange, 200, "true");
                 }
                 default -> exchange.sendResponseHeaders(405, -1);
             }
         } catch (Exception e) {
-            HttpUtils.sendError(exchange, 500, e.getMessage());
+            HttpUtils.safeSendError(exchange, 500, e.getMessage());
         }
     }
 }

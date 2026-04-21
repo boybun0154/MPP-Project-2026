@@ -4,18 +4,17 @@ import model.Client;
 import model.Department;
 import model.Employee;
 import model.Project;
-import repository.interfaces.IRepository;
+import repository.interfaces.*;
+import repository.jdbc.ClientRepository;
+import repository.jdbc.DepartmentRepository;
+import repository.jdbc.EmployeeRepository;
+import repository.jdbc.ProjectRepository;
 import service.ClientService;
 import service.DepartmentService;
 import service.EmployeeService;
 import service.ProjectService;
-import service.interfaces.IClientService;
-import service.interfaces.IDepartmentService;
-import service.interfaces.IEmployeeService;
-import service.interfaces.IProjectService;
-import utils.InMemoryRepository;
+import service.interfaces.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
@@ -30,14 +29,20 @@ public final class ServiceRegistry {
         return INSTANCE;
     }
 
-    private final IRepository<Client> clientRepo =
-            new InMemoryRepository<>(Client::getId, Client::setId);
-    private final IRepository<Department> departmentRepo =
-            new InMemoryRepository<>(Department::getId, Department::setId);
-    private final IRepository<Employee> employeeRepo =
-            new InMemoryRepository<>(Employee::getId, Employee::setId);
-    private final IRepository<Project> projectRepo =
-            new InMemoryRepository<>(Project::getId, Project::setId);
+    // Using Memory
+//    private final IRepository<Client> clientRepo =
+//            new InMemoryRepository<>(Client::getId, Client::setId);
+//    private final IRepository<Department> departmentRepo =
+//            new InMemoryRepository<>(Department::getId, Department::setId);
+//    private final IRepository<Employee> employeeRepo =
+//            new InMemoryRepository<>(Employee::getId, Employee::setId);
+//    private final IRepository<Project> projectRepo =
+//            new InMemoryRepository<>(Project::getId, Project::setId);
+
+    private final IClientRepository clientRepo = new ClientRepository();
+    private final IDepartmentRepository departmentRepo = new DepartmentRepository();
+    private final IEmployeeRepository employeeRepo = new EmployeeRepository();
+    private final IProjectRepository projectRepo = new ProjectRepository();
 
     private final IClientService clientService = new ClientService(clientRepo);
     private final IDepartmentService departmentService = new DepartmentService(departmentRepo, employeeRepo);
@@ -45,7 +50,7 @@ public final class ServiceRegistry {
     private final IProjectService projectService = new ProjectService(projectRepo);
 
     private ServiceRegistry() {
-        seed();
+//        seed();
     }
 
     public IClientService clients() { return clientService; }
@@ -58,20 +63,20 @@ public final class ServiceRegistry {
         Department eng = new Department();
         eng.setName("Engineering");
         eng.setLocation("HQ");
-        eng.setAnnualBudget(new BigDecimal("1000000"));
+        eng.setAnnualBudget(1000000d);
         departmentService.create(eng);
 
         Department ops = new Department();
         ops.setName("Operations");
         ops.setLocation("Remote");
-        ops.setAnnualBudget(new BigDecimal("500000"));
+        ops.setAnnualBudget(500000d);
         departmentService.create(ops);
 
         Employee alice = new Employee();
         alice.setFullName("Alice Johnson");
         alice.setTitle("Senior Engineer");
         alice.setHireDate(LocalDate.of(2021, 3, 1));
-        alice.setSalary(new BigDecimal("120000"));
+        alice.setSalary(120000d);
         alice.setDepartment(eng);
         eng.getEmployees().add(alice);
         employeeService.create(alice);
@@ -80,7 +85,7 @@ public final class ServiceRegistry {
         bob.setFullName("Bob Smith");
         bob.setTitle("Analyst");
         bob.setHireDate(LocalDate.of(2022, 6, 15));
-        bob.setSalary(new BigDecimal("80000"));
+        bob.setSalary(80000d);
         bob.setDepartment(ops);
         ops.getEmployees().add(bob);
         employeeService.create(bob);
@@ -89,8 +94,8 @@ public final class ServiceRegistry {
         acme.setName("Acme Corp");
         acme.setIndustry("Manufacturing");
         acme.setPrimaryContactName("Jane Doe");
-        acme.setPrimaryContactPhone("555-0100");
-        acme.setPrimaryContactEmail("jane@acme.example");
+        acme.setPhone("555-0100");
+        acme.setEmail("jane@acme.example");
         clientService.create(acme);
 
         Project apollo = new Project();
@@ -98,7 +103,7 @@ public final class ServiceRegistry {
         apollo.setDescription("Platform migration");
         apollo.setStartDate(LocalDate.now().minusMonths(2));
         apollo.setEndDate(LocalDate.now().plusDays(20));
-        apollo.setBudget(new BigDecimal("250000"));
+        apollo.setBudget(250000d);
         apollo.setStatus("Active");
         apollo.getDepartments().add(eng);
         apollo.getEmployeeAllocations().put(alice, 60);
@@ -112,7 +117,7 @@ public final class ServiceRegistry {
         zephyr.setDescription("Reporting overhaul");
         zephyr.setStartDate(LocalDate.now().minusMonths(1));
         zephyr.setEndDate(LocalDate.now().plusMonths(3));
-        zephyr.setBudget(new BigDecimal("120000"));
+        zephyr.setBudget(120000d);
         zephyr.setStatus("Active");
         zephyr.getDepartments().add(eng);
         zephyr.getEmployeeAllocations().put(alice, 20);

@@ -1,6 +1,5 @@
 package model;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,9 +7,13 @@ public class Department {
     private Integer id;
     private String name;
     private String location;
-    private BigDecimal annualBudget;
-    private final List<Project> projects = new ArrayList<>();
-    private final List<Employee> employees = new ArrayList<>();
+    private Double annualBudget;
+    private List<Project> projects = new ArrayList<>();
+    private List<Employee> employees = new ArrayList<>();
+
+    public Department() {
+
+    }
 
     public Integer getId() {
         return id;
@@ -36,11 +39,11 @@ public class Department {
         this.location = location;
     }
 
-    public BigDecimal getAnnualBudget() {
+    public Double getAnnualBudget() {
         return annualBudget;
     }
 
-    public void setAnnualBudget(BigDecimal annualBudget) {
+    public void setAnnualBudget(Double annualBudget) {
         this.annualBudget = annualBudget;
     }
 
@@ -48,7 +51,15 @@ public class Department {
         return projects;
     }
 
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
+
     public List<Employee> getEmployees() {
         return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 }

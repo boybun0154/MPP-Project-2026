@@ -8,8 +8,6 @@ import model.Department;
 import utils.HttpUtils;
 import utils.Json;
 
-import java.io.IOException;
-
 public class DepartmentHandler implements HttpHandler {
     private final DepartmentController controller = new DepartmentController(
             ServiceRegistry.get().departments(),
@@ -17,7 +15,7 @@ public class DepartmentHandler implements HttpHandler {
     );
 
     @Override
-    public void handle(HttpExchange exchange) throws IOException {
+    public void handle(HttpExchange exchange) {
         String method = exchange.getRequestMethod();
         String path = exchange.getRequestURI().getPath();
 
@@ -50,7 +48,7 @@ public class DepartmentHandler implements HttpHandler {
                 case "DELETE" -> {
                     if (idStr == null) { HttpUtils.safeSendError(exchange, 400, "ID Required"); return; }
                     controller.delete(Integer.parseInt(idStr));
-                    HttpUtils.safeSendJson(exchange, 200, "{\"deleted\":true}");
+                    HttpUtils.safeSendJson(exchange, 200, "true");
                 }
                 default -> exchange.sendResponseHeaders(405, -1);
             }
@@ -59,13 +57,14 @@ public class DepartmentHandler implements HttpHandler {
         }
     }
 
-    private void handleListProjects(HttpExchange exchange, String path) throws IOException {
-        String[] parts = path.split("/");
+    private void handleListProjects(HttpExchange exchange, String path) {
         try {
-            int deptId = Integer.parseInt(parts[2]);
-            String sortBy = HttpUtils.queryParams(exchange).getOrDefault("sortBy", "name");
+            String[] parts = path.split("/");
 
-            var projects = controller.getProjectsByDepartment(deptId, sortBy);
+            int departmentId = Integer.parseInt(parts[2]);
+            String sortBy = HttpUtils.queryParams(exchange).getOrDefault("sortBy", "id");
+
+            var projects = controller.getProjectsByDepartment(departmentId, sortBy);
             HttpUtils.safeSendJson(exchange, 200, Json.ofList(projects));
         } catch (Exception e) {
             HttpUtils.safeSendError(exchange, 400, "Invalid Department ID");

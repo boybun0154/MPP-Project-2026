@@ -12,7 +12,7 @@ public final class DbClient {
     }
 
     public static <T> List<T> query(String sql, RowMapper<T> mapper, Object... params) {
-        List<T> results = new ArrayList<>();
+        List<T> result = new ArrayList<>();
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -21,14 +21,14 @@ public final class DbClient {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    results.add(mapper.map(rs));
+                    result.add(mapper.map(rs));
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException("Error: " + e.getMessage(), e);
         }
 
-        return results;
+        return result;
     }
 
     public static <T> Optional<T> fetchOne(String sql, RowMapper<T> mapper, Object... params) {
@@ -47,6 +47,24 @@ public final class DbClient {
         }
 
         return Optional.empty();
+    }
+
+    public static int insert(String sql, Object... params) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            setParameters(stmt, params);
+            stmt.executeUpdate();
+
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+            return 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Insert Error: " + e.getMessage(), e);
+        }
     }
 
 

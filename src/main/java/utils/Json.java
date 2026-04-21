@@ -14,6 +14,7 @@ public final class Json {
 
     public static String of(Object obj) {
         if (obj == null) return "null";
+        // Se o objeto principal já for uma lista, redireciona para ofList
         if (obj instanceof Collection<?>) return ofList(new ArrayList<>((Collection<?>) obj));
 
         Field[] fields = obj.getClass().getDeclaredFields();
@@ -23,7 +24,16 @@ public final class Json {
                     try {
                         Object val = f.get(obj);
                         if (val == null) return "\"" + f.getName() + "\":null";
-                        String res = (val instanceof Number || val instanceof Boolean) ? val.toString() : "\"" + val + "\"";
+
+                        String res;
+                        if (val instanceof Number || val instanceof Boolean) {
+                            res = val.toString();
+                        } else if (val instanceof Collection<?>) {
+                            res = ofList(new ArrayList<>((Collection<?>) val));
+                        } else {
+                            res = "\"" + val.toString().replace("\"", "\\\"") + "\"";
+                        }
+
                         return "\"" + f.getName() + "\":" + res;
                     } catch (Exception e) {
                         return "";
@@ -31,6 +41,7 @@ public final class Json {
                 })
                 .filter(s -> !s.isEmpty())
                 .collect(Collectors.joining(","));
+
         return "{" + body + "}";
     }
 
