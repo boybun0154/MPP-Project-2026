@@ -8,8 +8,8 @@ public class Main {
         if ("SERVER".equals(mode)) {
             AppServer.start();
         } else {
+            // TODO: Code the CLI mode
             System.out.println("...");
-
         }
     }
 }
