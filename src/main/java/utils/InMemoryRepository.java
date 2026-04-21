@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.BiConsumer;
 
@@ -14,19 +14,19 @@ import java.util.function.BiConsumer;
  * Lightweight in-memory IRepository implementation used until the JDBC layer
  * is finished. Keeps the service/controller wiring testable today.
  */
-public class InMemoryRepository<T> implements IRepository<T, Long> {
-    private final ConcurrentHashMap<Long, T> store = new ConcurrentHashMap<>();
-    private final AtomicLong sequence = new AtomicLong(0);
-    private final Function<T, Long> idGetter;
-    private final BiConsumer<T, Long> idSetter;
+public class InMemoryRepository<T> implements IRepository<T> {
+    private final ConcurrentHashMap<Integer, T> store = new ConcurrentHashMap<>();
+    private final AtomicInteger sequence = new AtomicInteger(0);
+    private final Function<T, Integer> idGetter;
+    private final BiConsumer<T, Integer> idSetter;
 
-    public InMemoryRepository(Function<T, Long> idGetter, BiConsumer<T, Long> idSetter) {
+    public InMemoryRepository(Function<T, Integer> idGetter, BiConsumer<T, Integer> idSetter) {
         this.idGetter = idGetter;
         this.idSetter = idSetter;
     }
 
     @Override
-    public Optional<T> findById(Long id) {
+    public Optional<T> findById(Integer id) {
         return Optional.ofNullable(store.get(id));
     }
 
@@ -37,7 +37,7 @@ public class InMemoryRepository<T> implements IRepository<T, Long> {
 
     @Override
     public void save(T entity) {
-        Long id = idGetter.apply(entity);
+        Integer id = idGetter.apply(entity);
         if (id == null) {
             id = sequence.incrementAndGet();
             idSetter.accept(entity, id);
@@ -45,5 +45,10 @@ public class InMemoryRepository<T> implements IRepository<T, Long> {
             sequence.accumulateAndGet(id, Math::max);
         }
         store.put(id, entity);
+    }
+
+    @Override
+    public void delete(Integer id) {
+
     }
 }

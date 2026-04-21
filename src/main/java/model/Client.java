@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Client {
-    private Long id;
+    private Integer id;
     private String name;
     private String industry;
     private String primaryContactName;
@@ -12,11 +12,11 @@ public class Client {
     private String primaryContactEmail;
     private final Set<Project> projects = new HashSet<>();
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

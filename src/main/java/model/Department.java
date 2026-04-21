@@ -5,18 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Department {
-    private Long id;
+    private Integer id;
     private String name;
     private String location;
     private BigDecimal annualBudget;
     private final List<Project> projects = new ArrayList<>();
     private final List<Employee> employees = new ArrayList<>();
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -3,8 +3,12 @@ package repository.interfaces;
 import java.util.List;
 import java.util.Optional;
 
-public interface IRepository<T, ID> {
-    Optional<T> findById(ID id);
+public interface IRepository<T> {
+    Optional<T> findById(Integer id);
+
     List<T> findAll();
+
     void save(T entity);
+
+    void delete(Integer id);
 }

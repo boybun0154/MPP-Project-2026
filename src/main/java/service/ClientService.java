@@ -11,9 +11,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ClientService implements IClientService {
-    private final IRepository<Client, Long> clientRepository;
+    private final IRepository<Client> clientRepository;
 
-    public ClientService(IRepository<Client, Long> clientRepository) {
+    public ClientService(IRepository<Client> clientRepository) {
         this.clientRepository = clientRepository;
     }
 
@@ -24,7 +24,7 @@ public class ClientService implements IClientService {
     }
 
     @Override
-    public Optional<Client> getById(Long id) {
+    public Optional<Client> getById(Integer id) {
         return clientRepository.findById(id);
     }
 
@@ -34,14 +34,19 @@ public class ClientService implements IClientService {
     }
 
     @Override
-    public Client update(Long id, Client entity) {
-        // Placeholder: production version should validate id existence before save.
-        clientRepository.save(entity);
-        return entity;
-    }
+    public Optional<Client> update(Integer id, Client entity) {
+        if (clientRepository.findById(id).isEmpty()) {
+            return Optional.empty();
+        }
 
+        entity.setId(id);
+
+        clientRepository.save(entity);
+
+        return Optional.of(entity);
+    }
     @Override
-    public void delete(Long id) {
+    public void delete(Integer id) {
         // Placeholder: IRepository currently has no delete contract.
     }
 

@@ -5,15 +5,47 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1157a26c-db3f-4afe-9c50-5d57ab98e626" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/repository/jdbc/core/DbClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/repository/jdbc/core/RowMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/database/postgresql/seed.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/database/sqlite/seed.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/config/ServiceRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/config/ServiceRegistry.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/ClientController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/DepartmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/DepartmentController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/EmployeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/EmployeeController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/ProjectController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/ProjectController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/handlers/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/handlers/ClientHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/handlers/DepartmentHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/handlers/DepartmentHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/handlers/EmployeeHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/handlers/EmployeeHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/handlers/ProjectHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/handlers/ProjectHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/handlers/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/handler/ClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/handlers/DepartmentHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/handler/DepartmentHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/handlers/EmployeeHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/handler/EmployeeHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/handlers/ProjectHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/handler/ProjectHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Department.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Department.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Employee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Project.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Project.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/interfaces/IClientRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/interfaces/IClientRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/interfaces/IDepartmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/interfaces/IDepartmentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/interfaces/IEmployeeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/interfaces/IEmployeeRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/interfaces/IProjectRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/interfaces/IProjectRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/interfaces/IRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/interfaces/IRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/jdbc/ClientRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/jdbc/ClientRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/jdbc/DepartmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/jdbc/DepartmentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/jdbc/EmployeeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/jdbc/EmployeeRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/jdbc/ProjectRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/jdbc/ProjectRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/server/Router.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/server/Router.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/ClientService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/ClientService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/DepartmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/DepartmentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/EmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/EmployeeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/ProjectService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/ProjectService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/interfaces/IClientService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/interfaces/IClientService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/interfaces/IDepartmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/interfaces/IDepartmentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/interfaces/IEmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/interfaces/IEmployeeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/interfaces/IProjectService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/interfaces/IProjectService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/interfaces/IService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/interfaces/IService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/utils/HttpUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/HttpUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/InMemoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/InMemoryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/Json.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/database/seed.sql" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,8 +64,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -53,34 +85,50 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.MPP-Project-2026 [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.MPP-Project-2026 [compile].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.MPP-Project-2026 [install].executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/controller&quot;,
-    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/shadow/Documents/MIU/Blocks/Modern Programming Practices/Assignments/Project/MPP-Project-2026&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Debug",
+    "Maven.MPP-Project-2026 [clean].executor": "Run",
+    "Maven.MPP-Project-2026 [compile].executor": "Run",
+    "Maven.MPP-Project-2026 [install].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "Merging feature/controller",
+    "javascript.preferred.runtime.type.id": "node",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/shadow/Documents/MIU/Blocks/Modern Programming Practices/Assignments/Project/MPP-Project-2026",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources/database/postgresql" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources/database/sqlite" />
+      <recent name="$PROJECT_DIR$/src/main/resources/database" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="handlers" />
+      <recent name="controller" />
+      <recent name="service" />
+      <recent name="repository.jdbc" />
+      <recent name="repository.interfaces" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
@@ -112,7 +160,7 @@
       <option name="presentableId" value="Default" />
       <updated>1776728315309</updated>
       <workItem from="1776728316325" duration="5432000" />
-      <workItem from="1776736492319" duration="1706000" />
+      <workItem from="1776736492319" duration="16207000" />
     </task>
     <servers />
   </component>
@@ -123,9 +171,19 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/handlers/DepartmentHandler.java</url>
-          <line>14</line>
-          <option name="timeStamp" value="2" />
+          <url>file://$PROJECT_DIR$/src/main/java/handler/DepartmentHandler.java</url>
+          <line>20</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/handler/ProjectHandler.java</url>
+          <line>17</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/config/ServiceRegistry.java</url>
+          <line>47</line>
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -1,6 +1,7 @@
 package service;
 
 import model.Department;
+import model.Employee;
 import repository.interfaces.IRepository;
 import service.interfaces.IDepartmentService;
 
@@ -8,20 +9,26 @@ import java.util.List;
 import java.util.Optional;
 
 public class DepartmentService implements IDepartmentService {
-    private final IRepository<Department, Long> departmentRepository;
+    private final IRepository<Department> departmentRepository;
+    private final IRepository<Employee> employeeRepository;
 
-    public DepartmentService(IRepository<Department, Long> departmentRepository) {
+    public DepartmentService(IRepository<Department> departmentRepository,
+                             IRepository<Employee> employeeRepository) {
         this.departmentRepository = departmentRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     @Override
     public Department create(Department entity) {
+        if (entity.getName() == null || entity.getName().isEmpty()) {
+            throw new IllegalArgumentException("Department name is required.");
+        }
         departmentRepository.save(entity);
         return entity;
     }
 
     @Override
-    public Optional<Department> getById(Long id) {
+    public Optional<Department> getById(Integer id) {
         return departmentRepository.findById(id);
     }
 
@@ -31,15 +38,23 @@ public class DepartmentService implements IDepartmentService {
     }
 
     @Override
-    public Department update(Long id, Department entity) {
-        // Placeholder: production version should validate id existence before save.
-        departmentRepository.save(entity);
-        return entity;
+    public Optional<Department> update(Integer id, Department entity) {
+        return departmentRepository.findById(id).map(existing -> {
+            entity.setId(id);
+            departmentRepository.save(entity);
+            return entity;
+        });
     }
 
     @Override
-    public void delete(Long id) {
-        // Placeholder: IRepository currently has no delete contract.
-        // Future implementation should enforce referential integrity checks.
+    public void delete(Integer id) {
+        boolean hasEmployees = employeeRepository.findAll().stream()
+                .anyMatch(emp -> emp.getDepartment() != null && emp.getDepartment().getId().equals(id));
+
+        if (hasEmployees) {
+            throw new IllegalStateException("Cannot delete department: There are employees assigned to it.");
+        }
+
+        departmentRepository.delete(id);
     }
 }

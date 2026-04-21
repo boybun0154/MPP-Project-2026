@@ -1,9 +1,6 @@
 package repository.interfaces;
 
-import model.Department;
+import model.Employee;
 
-import java.util.Optional;
-
-public interface IEmployeeRepository extends IRepository<Department, Integer> {
-    Optional<Department> findById(int id);
+public interface IEmployeeRepository extends IRepository<Employee> {
 }

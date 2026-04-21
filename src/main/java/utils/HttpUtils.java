@@ -2,11 +2,7 @@ package utils;
 
 import com.sun.net.httpserver.HttpExchange;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URI;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,46 +11,33 @@ public final class HttpUtils {
     private HttpUtils() {
     }
 
-    public static void sendJson(HttpExchange exchange, int statusCode, String body) throws IOException {
-        byte[] response = body.getBytes(StandardCharsets.UTF_8);
-        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-        exchange.sendResponseHeaders(statusCode, response.length);
+    public static void sendJson(HttpExchange exchange, int status, String json) throws IOException {
+        byte[] response = json.getBytes(StandardCharsets.UTF_8);
+        exchange.getResponseHeaders().set("Content-Type", "application/json");
+        exchange.sendResponseHeaders(status, response.length);
         try (OutputStream os = exchange.getResponseBody()) {
             os.write(response);
         }
     }
 
-    public static String extractId(String path, String basePath) {
-        if (path.equals(basePath) || path.equals(basePath + "/")) {
-            return null;
-        }
-        String prefix = basePath + "/";
-        if (path.startsWith(prefix)) {
-            String id = path.substring(prefix.length());
-            return id.isBlank() ? null : id;
-        }
-        return null;
+    public static String extractId(String path, String root) {
+        String id = path.replace(root, "").replace("/", "");
+        return id.isEmpty() ? null : id;
     }
 
     public static String readBody(HttpExchange exchange) throws IOException {
-        try (InputStream is = exchange.getRequestBody();
-             ByteArrayOutputStream buf = new ByteArrayOutputStream()) {
-            byte[] chunk = new byte[1024];
-            int n;
-            while ((n = is.read(chunk)) > 0) buf.write(chunk, 0, n);
-            return buf.toString(StandardCharsets.UTF_8);
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8))) {
+            return reader.lines().collect(java.util.stream.Collectors.joining());
         }
     }
 
     public static Map<String, String> queryParams(HttpExchange exchange) {
-        URI uri = exchange.getRequestURI();
         Map<String, String> result = new HashMap<>();
-        String q = uri.getRawQuery();
-        if (q == null || q.isEmpty()) return result;
-        for (String pair : q.split("&")) {
-            int eq = pair.indexOf('=');
-            if (eq < 0) result.put(urlDecode(pair), "");
-            else result.put(urlDecode(pair.substring(0, eq)), urlDecode(pair.substring(eq + 1)));
+        String query = exchange.getRequestURI().getQuery();
+        if (query == null) return result;
+        for (String param : query.split("&")) {
+            String[] entry = param.split("=");
+            if (entry.length > 1) result.put(entry[0], entry[1]);
         }
         return result;
     }
@@ -68,7 +51,23 @@ public final class HttpUtils {
     }
 
     public static void sendError(HttpExchange exchange, int status, String message) throws IOException {
-        String body = "{\"error\":" + Json.escape(message) + "}";
-        sendJson(exchange, status, body);
+        String json = String.format("{\"error\": \"%s\"}", message);
+        sendJson(exchange, status, json);
+    }
+
+    public static void safeSendJson(HttpExchange ex, int status, String body) {
+        try {
+            sendJson(ex, status, body);
+        } catch (IOException e) {
+            System.err.println("Failed to send response: " + e.getMessage());
+        }
+    }
+
+    public static void safeSendError(HttpExchange ex, int status, String message) {
+        try {
+            sendError(ex, status, message);
+        } catch (IOException e) {
+            System.err.println("Failed to send error: " + e.getMessage());
+        }
     }
 }

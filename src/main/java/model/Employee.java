@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Employee {
-    private Long id;
+    private Integer id;
     private String fullName;
     private String title;
     private LocalDate hireDate;
@@ -14,11 +14,11 @@ public class Employee {
     private Department department;
     private final Map<Project, Integer> projectAllocationPercentages = new HashMap<>();
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

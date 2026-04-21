@@ -17,9 +17,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ProjectService implements IProjectService {
-    private final IRepository<Project, Long> projectRepository;
+    private final IRepository<Project> projectRepository;
 
-    public ProjectService(IRepository<Project, Long> projectRepository) {
+    public ProjectService(IRepository<Project> projectRepository) {
         this.projectRepository = projectRepository;
     }
 
@@ -30,7 +30,7 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
-    public Optional<Project> getById(Long id) {
+    public Optional<Project> getById(Integer id) {
         return projectRepository.findById(id);
     }
 
@@ -40,20 +40,26 @@ public class ProjectService implements IProjectService {
     }
 
     @Override
-    public Project update(Long id, Project entity) {
-        // Placeholder: production version should validate id existence before save.
+    public Optional<Project> update(Integer id, Project entity) {
+        if (projectRepository.findById(id).isEmpty()) {
+            return Optional.empty();
+        }
+
+        entity.setId(id);
+
         projectRepository.save(entity);
-        return entity;
+
+        return Optional.of(entity);
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Integer id) {
         // Placeholder: IRepository currently has no delete contract.
     }
 
     @Override
     public BigDecimal calculateProjectHRCost(int projectId) {
-        Project project = projectRepository.findById((long) projectId)
+        Project project = projectRepository.findById((int) projectId)
                 .orElseThrow(() -> new IllegalArgumentException("Project not found: " + projectId));
 
         long months = monthsBetweenRoundedUp(project.getStartDate(), project.getEndDate());
@@ -88,7 +94,7 @@ public class ProjectService implements IProjectService {
         List<Project> projects = projectRepository.findAll().stream()
                 .filter(p -> "Active".equalsIgnoreCase(p.getStatus()))
                 .filter(p -> p.getDepartments().stream()
-                        .anyMatch(d -> d.getId() != null && d.getId() == (long) departmentId))
+                        .anyMatch(d -> d.getId() != null && d.getId() == departmentId))
                 .collect(Collectors.toList());
 
         Comparator<Project> comparator = comparatorFor(sortBy);
@@ -105,7 +111,7 @@ public class ProjectService implements IProjectService {
     }
 
     private static Comparator<Project> comparatorFor(String sortBy) {
-        if (sortBy == null) return Comparator.comparing(Project::getId, Comparator.nullsLast(Long::compareTo));
+        if (sortBy == null) return Comparator.comparing(Project::getId, Comparator.nullsLast(Integer::compareTo));
         switch (sortBy.toLowerCase()) {
             case "project_budget":
             case "budget":
@@ -117,7 +123,7 @@ public class ProjectService implements IProjectService {
             case "name":
                 return Comparator.comparing(Project::getName, Comparator.nullsLast(String::compareToIgnoreCase));
             default:
-                return Comparator.comparing(Project::getId, Comparator.nullsLast(Long::compareTo));
+                return Comparator.comparing(Project::getId, Comparator.nullsLast(Integer::compareTo));
         }
     }
 }

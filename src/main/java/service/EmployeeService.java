@@ -9,15 +9,15 @@ import java.util.List;
 import java.util.Optional;
 
 public class EmployeeService implements IEmployeeService {
-    private final IRepository<Employee, Long> employeeRepository;
-    private final IRepository<Department, Long> departmentRepository;
+    private final IRepository<Employee> employeeRepository;
+    private final IRepository<Department> departmentRepository;
 
-    public EmployeeService(IRepository<Employee, Long> employeeRepository) {
+    public EmployeeService(IRepository<Employee> employeeRepository) {
         this(employeeRepository, null);
     }
 
-    public EmployeeService(IRepository<Employee, Long> employeeRepository,
-                           IRepository<Department, Long> departmentRepository) {
+    public EmployeeService(IRepository<Employee> employeeRepository,
+                           IRepository<Department> departmentRepository) {
         this.employeeRepository = employeeRepository;
         this.departmentRepository = departmentRepository;
     }
@@ -29,7 +29,7 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    public Optional<Employee> getById(Long id) {
+    public Optional<Employee> getById(Integer id) {
         return employeeRepository.findById(id);
     }
 
@@ -39,26 +39,32 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    public Employee update(Long id, Employee entity) {
-        // Placeholder: production version should validate id existence before save.
+    public Optional<Employee> update(Integer id, Employee entity) {
+        if (employeeRepository.findById(id).isEmpty()) {
+            return Optional.empty();
+        }
+
+        entity.setId(id);
+
         employeeRepository.save(entity);
-        return entity;
+
+        return Optional.of(entity);
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Integer id) {
         // Placeholder: IRepository currently has no delete contract.
     }
 
     @Override
-    public void transferEmployeeToDepartment(int employeeId, int newDepartmentId) {
-        Employee employee = employeeRepository.findById((long) employeeId)
+    public Optional<Employee> transferEmployeeToDepartment(int employeeId, int newDepartmentId) {
+        Employee employee = employeeRepository.findById((int) employeeId)
                 .orElseThrow(() -> new IllegalArgumentException("Employee not found: " + employeeId));
 
-        Department newDepartment = resolveDepartment((long) newDepartmentId);
+        Department newDepartment = resolveDepartment((int) newDepartmentId);
 
         Department current = employee.getDepartment();
-        if (current != null && current.getId() != null && current.getId() == (long) newDepartmentId) {
+        if (current != null && current.getId() != null && current.getId() == (int) newDepartmentId) {
             throw new IllegalStateException(
                     "Employee " + employeeId + " already belongs to department " + newDepartmentId);
         }
@@ -75,9 +81,11 @@ public class EmployeeService implements IEmployeeService {
         if (departmentRepository != null) {
             departmentRepository.save(newDepartment);
         }
+
+        return getById(employeeId);
     }
 
-    private Department resolveDepartment(Long departmentId) {
+    private Department resolveDepartment(Integer departmentId) {
         if (departmentRepository != null) {
             return departmentRepository.findById(departmentId)
                     .orElseThrow(() -> new IllegalArgumentException("Department not found: " + departmentId));

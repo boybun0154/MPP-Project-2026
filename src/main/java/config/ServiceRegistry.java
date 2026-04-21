@@ -30,17 +30,17 @@ public final class ServiceRegistry {
         return INSTANCE;
     }
 
-    private final IRepository<Client, Long> clientRepo =
+    private final IRepository<Client> clientRepo =
             new InMemoryRepository<>(Client::getId, Client::setId);
-    private final IRepository<Department, Long> departmentRepo =
+    private final IRepository<Department> departmentRepo =
             new InMemoryRepository<>(Department::getId, Department::setId);
-    private final IRepository<Employee, Long> employeeRepo =
+    private final IRepository<Employee> employeeRepo =
             new InMemoryRepository<>(Employee::getId, Employee::setId);
-    private final IRepository<Project, Long> projectRepo =
+    private final IRepository<Project> projectRepo =
             new InMemoryRepository<>(Project::getId, Project::setId);
 
     private final IClientService clientService = new ClientService(clientRepo);
-    private final IDepartmentService departmentService = new DepartmentService(departmentRepo);
+    private final IDepartmentService departmentService = new DepartmentService(departmentRepo, employeeRepo);
     private final IEmployeeService employeeService = new EmployeeService(employeeRepo, departmentRepo);
     private final IProjectService projectService = new ProjectService(projectRepo);
 

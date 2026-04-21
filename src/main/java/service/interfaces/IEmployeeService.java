@@ -2,6 +2,8 @@ package service.interfaces;
 
 import model.Employee;
 
-public interface IEmployeeService extends IService<Employee, Long> {
-    void transferEmployeeToDepartment(int employeeId, int newDepartmentId);
+import java.util.Optional;
+
+public interface IEmployeeService extends IService<Employee> {
+    Optional<Employee> transferEmployeeToDepartment(int employeeId, int newDepartmentId);
 }

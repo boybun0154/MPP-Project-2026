@@ -1,10 +1,10 @@
 package server;
 
 import com.sun.net.httpserver.HttpServer;
-import handlers.ClientHandler;
-import handlers.DepartmentHandler;
-import handlers.EmployeeHandler;
-import handlers.ProjectHandler;
+import handler.ClientHandler;
+import handler.DepartmentHandler;
+import handler.EmployeeHandler;
+import handler.ProjectHandler;
 
 public class Router {
     public static void configure(HttpServer server) {

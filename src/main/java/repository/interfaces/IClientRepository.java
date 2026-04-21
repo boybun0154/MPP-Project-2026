@@ -1,9 +1,6 @@
 package repository.interfaces;
 
-import model.Department;
+import model.Client;
 
-import java.util.Optional;
-
-public interface IClientRepository extends IRepository<Department, Integer> {
-    Optional<Department> findById(int id);
+public interface IClientRepository extends IRepository<Client> {
 }

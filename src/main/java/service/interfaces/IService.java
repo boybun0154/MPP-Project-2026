@@ -3,10 +3,10 @@ package service.interfaces;
 import java.util.List;
 import java.util.Optional;
 
-public interface IService<T, ID> {
+public interface IService<T> {
     T create(T entity);
-    Optional<T> getById(ID id);
+    Optional<T> getById(Integer id);
     List<T> getAll();
-    T update(ID id, T entity);
-    void delete(ID id);
+    Optional<T> update(Integer id, T entity);
+    void delete(Integer id);
 }

@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class Project {
-    private Long id;
+    private Integer id;
     private String name;
     private String description;
     private LocalDate startDate;
@@ -19,11 +19,11 @@ public class Project {
     private final Map<Employee, Integer> employeeAllocations = new HashMap<>();
     private final Set<Client> clients = new HashSet<>();
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
