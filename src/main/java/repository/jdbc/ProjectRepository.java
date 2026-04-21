@@ -1,29 +1,32 @@
 package repository.jdbc;
 
-import domain.Department;
-import repository.interfaces.IDepartmentRepository;
+import domain.Project;
+import repository.interfaces.IProjectRepository;
+import repository.jdbc.core.DbClient;
+import repository.jdbc.core.RowMapper;
 
 import java.util.List;
 import java.util.Optional;
 
-public class ProjectRepository implements IDepartmentRepository {
+public class ProjectRepository implements IProjectRepository {
     @Override
-    public Optional<Department> findById(int id) {
-        return Optional.empty();
+    public Optional<Project> findById(int id) {
+        return DbClient.fetchOne(
+                "SELECT * FROM clients WHERE id = ?",
+                PROJECT_MAPPER,
+                id
+        );
     }
 
     @Override
-    public Optional<Department> findById(Integer integer) {
-        return Optional.empty();
+    public List<Project> findAll() {
+        return DbClient.query("SELECT * FROM clients", PROJECT_MAPPER);
     }
 
     @Override
-    public List<Department> findAll() {
-        return List.of();
-    }
-
-    @Override
-    public void save(Department entity) {
+    public void save(Project entity) {
 
     }
+
+    private static final RowMapper<Project> PROJECT_MAPPER = rs -> new Project();
 }
