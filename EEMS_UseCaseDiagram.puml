@@ -1,0 +1,40 @@
+@startuml EEMS_UseCaseDiagram
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+title EEMS - Employment Management System - Use Case Diagram
+
+actor "HR Manager" as HR
+actor "Department Manager" as DM
+actor "Project Manager" as PM
+actor "System Administrator" as Admin
+
+rectangle "Employment Management System (EEMS)" {
+  usecase "Manage Employees" as UC_Emp
+  usecase "Manage Departments" as UC_Dept
+  usecase "Manage Projects" as UC_Proj
+  usecase "Manage Clients" as UC_Cli
+
+  usecase "Calculate Project\nHR Cost" as UC_CalcCost
+  usecase "Get Projects by\nDepartment" as UC_DeptReport
+  usecase "Find Clients by\nUpcoming Deadline" as UC_FindClients
+  usecase "Transfer Employee\nto Department" as UC_Transfer
+}
+
+HR --> UC_Emp
+HR --> UC_Transfer
+
+DM --> UC_Dept
+DM --> UC_DeptReport
+
+PM --> UC_Proj
+PM --> UC_Cli
+PM --> UC_CalcCost
+PM --> UC_FindClients
+
+Admin --> UC_Emp
+Admin --> UC_Dept
+Admin --> UC_Proj
+Admin --> UC_Cli
+
+@enduml
