@@ -1,0 +1,173 @@
+@startuml EEMS_ClassDiagram
+
+left to right direction
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam classFontSize 13
+skinparam classHeaderBackgroundColor #EEEDFE
+skinparam classBorderColor #534AB7
+skinparam classArrowColor #534AB7
+skinparam classBackgroundColor #FFFFFF
+skinparam stereotypeCBackgroundColor #E1F5EE
+skinparam stereotypeCBorderColor #0F6E56
+skinparam padding 5
+skinparam nodesep 60
+skinparam ranksep 80
+skinparam ArrowFontSize 11
+
+title EEMS — Employment Management System\nUML Class Diagram
+
+' ─────────────────────────────────────────
+'  CORE DOMAIN ENTITIES
+' ─────────────────────────────────────────
+
+class Department {
+  - departmentId    : int
+  - name            : String
+  - location        : String
+  - annualBudget    : double
+  --
+  + getDepartmentId()             : int
+  + setDepartmentId(id : int)     : void
+  + getName()                     : String
+  + setName(name : String)        : void
+  + getLocation()                 : String
+  + setLocation(location : String): void
+  + getAnnualBudget()             : double
+  + setAnnualBudget(budget : double) : void
+  + toString()                    : String
+}
+
+class Employee {
+  - employeeId      : int
+  - fullName        : String
+  - title           : String
+  - hireDate        : LocalDate
+  - salary          : double
+  - departmentId    : int
+  --
+  + getEmployeeId()               : int
+  + setEmployeeId(id : int)       : void
+  + getFullName()                 : String
+  + setFullName(name : String)    : void
+  + getTitle()                    : String
+  + setTitle(title : String)      : void
+  + getHireDate()                 : LocalDate
+  + setHireDate(date : LocalDate) : void
+  + getSalary()                   : double
+  + setSalary(salary : double)    : void
+  + getDepartmentId()             : int
+  + setDepartmentId(id : int)     : void
+  + toString()                    : String
+}
+
+class Project {
+  - projectId       : int
+  - name            : String
+  - description     : String
+  - startDate       : LocalDate
+  - endDate         : LocalDate
+  - budget          : double
+  - status          : String
+  --
+  + getProjectId()                : int
+  + setProjectId(id : int)        : void
+  + getName()                     : String
+  + setName(name : String)        : void
+  + getDescription()              : String
+  + setDescription(desc : String) : void
+  + getStartDate()                : LocalDate
+  + setStartDate(date : LocalDate): void
+  + getEndDate()                  : LocalDate
+  + setEndDate(date : LocalDate)  : void
+  + getBudget()                   : double
+  + setBudget(budget : double)    : void
+  + getStatus()                   : String
+  + setStatus(status : String)    : void
+  + toString()                    : String
+}
+
+class Client {
+  - clientId        : int
+  - name            : String
+  - industry        : String
+  - contactName     : String
+  - phone           : String
+  - email           : String
+  --
+  + getClientId()                     : int
+  + setClientId(id : int)             : void
+  + getName()                         : String
+  + setName(name : String)            : void
+  + getIndustry()                     : String
+  + setIndustry(industry : String)    : void
+  + getContactName()                  : String
+  + setContactName(name : String)     : void
+  + getPhone()                        : String
+  + setPhone(phone : String)          : void
+  + getEmail()                        : String
+  + setEmail(email : String)          : void
+  + toString()                        : String
+}
+
+' ─────────────────────────────────────────
+'  JUNCTION / ASSOCIATIVE CLASSES
+' ─────────────────────────────────────────
+
+class EmployeeProject {
+  - employeeId              : int
+  - projectId               : int
+  - allocationPercentage    : double
+  --
+  + getEmployeeId()                       : int
+  + setEmployeeId(id : int)               : void
+  + getProjectId()                        : int
+  + setProjectId(id : int)               : void
+  + getAllocationPercentage()             : double
+  + setAllocationPercentage(pct : double) : void
+  + toString()                            : String
+}
+
+class DepartmentProject {
+  - departmentId    : int
+  - projectId       : int
+  --
+  + getDepartmentId()             : int
+  + setDepartmentId(id : int)     : void
+  + getProjectId()                : int
+  + setProjectId(id : int)        : void
+  + toString()                    : String
+}
+
+class ClientProject {
+  - clientId        : int
+  - projectId       : int
+  --
+  + getClientId()             : int
+  + setClientId(id : int)     : void
+  + getProjectId()            : int
+  + setProjectId(id : int)    : void
+  + toString()                : String
+}
+
+' ─────────────────────────────────────────
+'  RELATIONSHIPS
+' ─────────────────────────────────────────
+
+' Department (1) employs Employee (0..*)
+' departmentId in Employee class body already documents the FK explicitly
+Department "1" *--> "0..*" Employee : employs >
+
+' Department (1) <-> Project (0..*) via DepartmentProject   [M:N]
+Department "1"  *--> "0..*" DepartmentProject : manages >
+Project    "1"  *--> "0..*" DepartmentProject : hosts >
+
+' Employee (0..*) <-> Project (0..*) via EmployeeProject   [M:N]
+Employee "1"  *--> "0..*" EmployeeProject : works on >
+Project  "1"  *--> "0..*" EmployeeProject : assigned to >
+
+' Client (0..*) <-> Project (0..*) via ClientProject        [M:N]
+Client  "1"  *--> "0..*" ClientProject : sponsors >
+Project "1"  *--> "0..*" ClientProject : linked to >
+
+@enduml
