@@ -1,5 +1,6 @@
 package service;
 
+import model.Department;
 import model.Employee;
 import repository.interfaces.IRepository;
 import service.interfaces.IEmployeeService;
@@ -9,9 +10,16 @@ import java.util.Optional;
 
 public class EmployeeService implements IEmployeeService {
     private final IRepository<Employee, Long> employeeRepository;
+    private final IRepository<Department, Long> departmentRepository;
 
     public EmployeeService(IRepository<Employee, Long> employeeRepository) {
+        this(employeeRepository, null);
+    }
+
+    public EmployeeService(IRepository<Employee, Long> employeeRepository,
+                           IRepository<Department, Long> departmentRepository) {
         this.employeeRepository = employeeRepository;
+        this.departmentRepository = departmentRepository;
     }
 
     @Override
@@ -44,10 +52,40 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     public void transferEmployeeToDepartment(int employeeId, int newDepartmentId) {
-        // Placeholder for transactional logic:
-        // 1) validate employee and department exist
-        // 2) validate transfer constraints
-        // 3) update employee department in a transaction
-        throw new UnsupportedOperationException("transferEmployeeToDepartment is not implemented yet.");
+        Employee employee = employeeRepository.findById((long) employeeId)
+                .orElseThrow(() -> new IllegalArgumentException("Employee not found: " + employeeId));
+
+        Department newDepartment = resolveDepartment((long) newDepartmentId);
+
+        Department current = employee.getDepartment();
+        if (current != null && current.getId() != null && current.getId() == (long) newDepartmentId) {
+            throw new IllegalStateException(
+                    "Employee " + employeeId + " already belongs to department " + newDepartmentId);
+        }
+
+        // Simulated transactional update: detach from current, attach to new, persist.
+        if (current != null) {
+            current.getEmployees().removeIf(e -> e.getId() != null && e.getId().equals(employee.getId()));
+        }
+        employee.setDepartment(newDepartment);
+        if (!newDepartment.getEmployees().contains(employee)) {
+            newDepartment.getEmployees().add(employee);
+        }
+        employeeRepository.save(employee);
+        if (departmentRepository != null) {
+            departmentRepository.save(newDepartment);
+        }
+    }
+
+    private Department resolveDepartment(Long departmentId) {
+        if (departmentRepository != null) {
+            return departmentRepository.findById(departmentId)
+                    .orElseThrow(() -> new IllegalArgumentException("Department not found: " + departmentId));
+        }
+        // Dummy fallback when no department repository is wired in yet.
+        Department dummy = new Department();
+        dummy.setId(departmentId);
+        dummy.setName("Department " + departmentId);
+        return dummy;
     }
 }

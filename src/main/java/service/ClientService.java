@@ -1,11 +1,14 @@
 package service;
 
 import model.Client;
+import model.Project;
 import repository.interfaces.IRepository;
 import service.interfaces.IClientService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ClientService implements IClientService {
     private final IRepository<Client, Long> clientRepository;
@@ -44,8 +47,20 @@ public class ClientService implements IClientService {
 
     @Override
     public List<Client> findClientsByUpcomingProjectDeadline(int daysUntilDeadline) {
-        // Placeholder for page-2 task:
-        // return clients tied to projects ending within daysUntilDeadline from now.
-        throw new UnsupportedOperationException("findClientsByUpcomingProjectDeadline is not implemented yet.");
+        if (daysUntilDeadline < 0) {
+            throw new IllegalArgumentException("daysUntilDeadline must be non-negative");
+        }
+        LocalDate today = LocalDate.now();
+        LocalDate cutoff = today.plusDays(daysUntilDeadline);
+
+        return clientRepository.findAll().stream()
+                .filter(client -> client.getProjects().stream().anyMatch(p -> withinDeadline(p, today, cutoff)))
+                .collect(Collectors.toList());
+    }
+
+    private static boolean withinDeadline(Project p, LocalDate today, LocalDate cutoff) {
+        LocalDate end = p.getEndDate();
+        if (end == null) return false;
+        return !end.isBefore(today) && !end.isAfter(cutoff);
     }
 }
