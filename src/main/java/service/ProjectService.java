@@ -2,6 +2,7 @@ package service;
 
 import model.Project;
 import model.Employee;
+import model.ProjectStatus;
 import repository.interfaces.IRepository;
 import service.interfaces.IProjectService;
 
@@ -79,7 +80,7 @@ public class ProjectService implements IProjectService {
     @Override
     public List<Project> getProjectsByDepartment(int departmentId, String sortBy) {
         return projectRepository.findAll().stream()
-                .filter(p -> "Active".equalsIgnoreCase(p.getStatus()))
+                .filter(p -> p.getStatus() == ProjectStatus.ACTIVE)
                 .filter(p -> p.getDepartments().stream()
                         .anyMatch(d -> d.getId() != null && d.getId() == departmentId))
                 .sorted(comparatorFor(sortBy))

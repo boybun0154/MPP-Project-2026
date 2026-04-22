@@ -29,24 +29,36 @@ public class DepartmentHandler implements HttpHandler {
 
             switch (method) {
                 case "GET" -> {
-                    if (idStr == null) HttpUtils.safeSendJson(exchange, 200, Json.ofList(controller.getAll()));
-                    else controller.getById(Integer.parseInt(idStr))
-                            .ifPresentOrElse(d -> HttpUtils.safeSendJson(exchange, 200, Json.of(d)),
-                                    () -> HttpUtils.safeSendError(exchange, 404, "Department not found"));
+                    if (idStr == null) {
+                        HttpUtils.safeSendJson(exchange, 200, Json.ofList(controller.getAll()));
+                    } else {
+                        controller.getById(Integer.parseInt(idStr))
+                                .ifPresentOrElse(
+                                        d -> HttpUtils.safeSendJson(exchange, 200, Json.of(d)),
+                                        () -> HttpUtils.safeSendError(exchange, 404, "Department not found"));
+                    }
                 }
                 case "POST" -> {
                     Department d = Json.fromJson(HttpUtils.readBody(exchange), Department.class);
                     HttpUtils.safeSendJson(exchange, 201, Json.of(controller.create(d)));
                 }
                 case "PUT" -> {
-                    if (idStr == null) { HttpUtils.safeSendError(exchange, 400, "ID Required"); return; }
+                    if (idStr == null) {
+                        HttpUtils.safeSendError(exchange, 400, "ID Required");
+                        return;
+                    }
+
                     Department d = Json.fromJson(HttpUtils.readBody(exchange), Department.class);
                     controller.update(Integer.parseInt(idStr), d)
-                            .ifPresentOrElse(updated -> HttpUtils.safeSendJson(exchange, 200, Json.of(updated)),
+                            .ifPresentOrElse(
+                                    updated -> HttpUtils.safeSendJson(exchange, 200, Json.of(updated)),
                                     () -> HttpUtils.safeSendError(exchange, 404, "Department not found"));
                 }
                 case "DELETE" -> {
-                    if (idStr == null) { HttpUtils.safeSendError(exchange, 400, "ID Required"); return; }
+                    if (idStr == null) {
+                        HttpUtils.safeSendError(exchange, 400, "ID Required");
+                        return;
+                    }
                     controller.delete(Integer.parseInt(idStr));
                     HttpUtils.safeSendJson(exchange, 200, "true");
                 }

@@ -7,6 +7,7 @@ import config.ServiceRegistry;
 import model.Employee;
 import utils.HttpUtils;
 import utils.Json;
+
 import java.io.IOException;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ public class EmployeeHandler implements HttpHandler {
     private final EmployeeController controller = new EmployeeController(ServiceRegistry.get().employees());
 
     @Override
-    public void handle(HttpExchange exchange) throws IOException {
+    public void handle(HttpExchange exchange) {
         String method = exchange.getRequestMethod();
         String path = exchange.getRequestURI().getPath();
 
@@ -28,24 +29,37 @@ public class EmployeeHandler implements HttpHandler {
 
             switch (method) {
                 case "GET" -> {
-                    if (idStr == null) HttpUtils.safeSendJson(exchange, 200, Json.ofList(controller.getAll()));
-                    else controller.getById(Integer.parseInt(idStr))
-                            .ifPresentOrElse(e -> HttpUtils.safeSendJson(exchange, 200, Json.of(e)),
-                                    () -> HttpUtils.safeSendError(exchange, 404, "Employee not found"));
+                    if (idStr == null) {
+                        HttpUtils.safeSendJson(exchange, 200, Json.ofList(controller.getAll()));
+                    } else {
+                        controller.getById(Integer.parseInt(idStr))
+                                .ifPresentOrElse(
+                                        e -> HttpUtils.safeSendJson(exchange, 200, Json.of(e)),
+                                        () -> HttpUtils.safeSendError(exchange, 404, "Employee not found"));
+                    }
                 }
                 case "POST" -> {
                     Employee e = Json.fromJson(HttpUtils.readBody(exchange), Employee.class);
                     HttpUtils.safeSendJson(exchange, 201, Json.of(controller.create(e)));
                 }
                 case "PUT" -> {
-                    if (idStr == null) { HttpUtils.safeSendError(exchange, 400, "ID Required"); return; }
+                    if (idStr == null) {
+                        HttpUtils.safeSendError(exchange, 400, "ID Required");
+                        return;
+                    }
+
                     Employee e = Json.fromJson(HttpUtils.readBody(exchange), Employee.class);
                     controller.update(Integer.parseInt(idStr), e)
-                            .ifPresentOrElse(updated -> HttpUtils.safeSendJson(exchange, 200, Json.of(updated)),
+                            .ifPresentOrElse(
+                                    updated -> HttpUtils.safeSendJson(exchange, 200, Json.of(updated)),
                                     () -> HttpUtils.safeSendError(exchange, 404, "Employee not found"));
                 }
                 case "DELETE" -> {
-                    if (idStr == null) { HttpUtils.safeSendError(exchange, 400, "ID Required"); return; }
+                    if (idStr == null) {
+                        HttpUtils.safeSendError(exchange, 400, "ID Required");
+                        return;
+                    }
+
                     controller.delete(Integer.parseInt(idStr));
                     HttpUtils.safeSendJson(exchange, 200, "true");
                 }

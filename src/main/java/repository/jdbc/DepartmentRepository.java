@@ -3,6 +3,7 @@ package repository.jdbc;
 import model.Department;
 import model.Employee;
 import model.Project;
+import model.ProjectStatus;
 import repository.interfaces.IDepartmentRepository;
 import repository.jdbc.core.DbClient;
 import repository.jdbc.core.RowMapper;
@@ -88,13 +89,16 @@ public class DepartmentRepository implements IDepartmentRepository {
 
         List<Project> projects = DbClient.query(sqlProjects, rs -> {
             Project project = new Project();
+
             project.setId(rs.getInt("id"));
             project.setName(rs.getString("name"));
             project.setDescription(rs.getString("description"));
             project.setStartDate(rs.getObject("start_date", LocalDate.class));
             project.setEndDate(rs.getObject("end_date", LocalDate.class));
             project.setBudget(rs.getDouble("budget"));
-            project.setStatus(rs.getString("status"));
+            project.setStatus(rs.getString("status") != null ?
+                    ProjectStatus.valueOf(rs.getString("status").toUpperCase()) : null);
+
             return project;
         }, department.getId());
 

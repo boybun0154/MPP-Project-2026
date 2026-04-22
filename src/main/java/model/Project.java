@@ -1,10 +1,7 @@
 package model;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Project {
     private Integer id;
@@ -13,7 +10,7 @@ public class Project {
     private LocalDate startDate;
     private LocalDate endDate;
     private Double budget;
-    private String status;
+    private ProjectStatus status;
 
     private Set<Department> departments = new HashSet<>();
     private Map<Employee, Integer> employeeAllocations = new HashMap<>();
@@ -23,7 +20,7 @@ public class Project {
     }
 
     public Project(Integer id, String name, String description, LocalDate startDate,
-                   LocalDate endDate, Double budget, String status) {
+                   LocalDate endDate, Double budget, ProjectStatus status) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -32,6 +29,8 @@ public class Project {
         this.budget = budget;
         this.status = status;
     }
+
+    // region Getters and Setters
 
     public Integer getId() {
         return id;
@@ -81,11 +80,11 @@ public class Project {
         this.budget = budget;
     }
 
-    public String getStatus() {
+    public ProjectStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ProjectStatus status) {
         this.status = status;
     }
 
@@ -113,6 +112,10 @@ public class Project {
         this.clients = clients;
     }
 
+    // endregion Getters and Setters
+
+    // region Overridden Methods
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -123,6 +126,9 @@ public class Project {
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(id);
     }
+
+    // endregion Overridden Methods
+
 }

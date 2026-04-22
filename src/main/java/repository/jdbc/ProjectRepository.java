@@ -1,9 +1,6 @@
 package repository.jdbc;
 
-import model.Department;
-import model.Employee;
-import model.Project;
-import model.Client;
+import model.*;
 import repository.interfaces.IProjectRepository;
 import repository.jdbc.core.DbClient;
 import repository.jdbc.core.RowMapper;
@@ -74,8 +71,10 @@ public class ProjectRepository implements IProjectRepository {
 
         List<Department> departments = DbClient.query(sqlDepartments, rs -> {
             Department department = new Department();
+
             department.setId(rs.getInt("id"));
             department.setName(rs.getString("name"));
+
             return department;
         }, project.getId());
 
@@ -89,8 +88,10 @@ public class ProjectRepository implements IProjectRepository {
 
         List<Client> clients = DbClient.query(sqlClients, rs -> {
             Client client = new Client();
+
             client.setId(rs.getInt("id"));
             client.setName(rs.getString("name"));
+
             return client;
         }, project.getId());
 
@@ -98,33 +99,39 @@ public class ProjectRepository implements IProjectRepository {
 
         String sqlEmployees =
                 "SELECT e.*, " +
-                "ep.allocation_percentage " +
-                "FROM employees e " +
-                "JOIN employee_projects ep ON e.id = ep.employee_id " +
-                "WHERE ep.project_id = ?";
+                        "ep.allocation_percentage " +
+                        "FROM employees e " +
+                        "JOIN employee_projects ep ON e.id = ep.employee_id " +
+                        "WHERE ep.project_id = ?";
 
         Map<Employee, Integer> allocations = new HashMap<>();
 
         DbClient.query(sqlEmployees, rs -> {
             Employee employee = new Employee();
+
             employee.setId(rs.getInt("id"));
             employee.setFullName(rs.getString("full_name"));
             employee.setSalary(rs.getDouble("salary"));
+
             allocations.put(employee, rs.getInt("allocation_percentage"));
+
             return null;
         }, project.getId());
         project.setEmployeeAllocations(allocations);
     }
 
     private static final RowMapper<Project> PROJECT_MAPPER = rs -> {
-        Project p = new Project();
-        p.setId(rs.getInt("id"));
-        p.setName(rs.getString("name"));
-        p.setDescription(rs.getString("description"));
-        p.setStartDate(rs.getObject("start_date", LocalDate.class));
-        p.setEndDate(rs.getObject("end_date", LocalDate.class));
-        p.setBudget(rs.getDouble("budget"));
-        p.setStatus(rs.getString("status"));
-        return p;
+        Project project = new Project();
+
+        project.setId(rs.getInt("id"));
+        project.setName(rs.getString("name"));
+        project.setDescription(rs.getString("description"));
+        project.setStartDate(rs.getObject("start_date", LocalDate.class));
+        project.setEndDate(rs.getObject("end_date", LocalDate.class));
+        project.setBudget(rs.getDouble("budget"));
+        project.setStatus(rs.getString("status") != null ?
+                ProjectStatus.valueOf(rs.getString("status").toUpperCase()) : null);
+
+        return project;
     };
 }

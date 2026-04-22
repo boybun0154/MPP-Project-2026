@@ -7,15 +7,26 @@
     <list default="true" id="1157a26c-db3f-4afe-9c50-5d57ab98e626" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/database.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/EmployeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/EmployeeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/ProjectController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/ProjectController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/config/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/config/AppConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/config/DBConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/config/DBConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/config/ServiceRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/config/ServiceRegistry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/handler/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/handler/ClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/handler/DepartmentHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/handler/DepartmentHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/handler/EmployeeHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/handler/EmployeeHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/handler/ProjectHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/handler/ProjectHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/model/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Employee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Project.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Project.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/jdbc/ClientRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/jdbc/ClientRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/repository/jdbc/DepartmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/jdbc/DepartmentRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/repository/jdbc/EmployeeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/jdbc/EmployeeRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/repository/jdbc/ProjectRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/jdbc/ProjectRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/EmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/EmployeeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/jdbc/core/DbClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/jdbc/core/DbClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/jdbc/core/RowMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/jdbc/core/RowMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/memory/InMemoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/memory/InMemoryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/ProjectService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/ProjectService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/HttpUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/HttpUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/utils/Json.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/Json.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/database/postgresql/seed.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/database/postgresql/seed.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/database/sqlite/seed.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/database/sqlite/seed.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +37,15 @@
     <persistenceIdMap>
       <entry key="_/Users/shadow/Documents/MIU/Blocks/Modern Programming Practices/Assignments/Project/MPP-Project-2026" value="3CdvZPQBsyO9yJaA9avGYN1XfZi" />
     </persistenceIdMap>
+  </component>
+  <component name="CopilotUserSelectedChatMode">
+    <option name="chatModeId" value="Agent" />
+  </component>
+  <component name="CopilotUserSelectedModel">
+    <selectedModels>
+      <entry key="chat-panel" value="GPT-5.2" />
+      <entry key="agent-panel" value="GPT-5.2" />
+    </selectedModels>
   </component>
   <component name="EmbeddingIndexingInfo">
     <option name="cachedIndexableFilesCount" value="26" />
@@ -98,15 +118,16 @@
       <recent name="$PROJECT_DIR$/src/main/resources/database/postgresql" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/diagrams" />
       <recent name="$PROJECT_DIR$/src/main/resources/database/sqlite" />
       <recent name="$PROJECT_DIR$/src/main/resources/database" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="model" />
       <recent name="handlers" />
       <recent name="controller" />
       <recent name="service" />
       <recent name="repository.jdbc" />
-      <recent name="repository.interfaces" />
     </key>
   </component>
   <component name="RunManager">
@@ -147,21 +168,18 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/config/ServiceRegistry.java</url>
-          <line>123</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/handler/EmployeeHandler.java</url>
-          <line>36</line>
-          <option name="timeStamp" value="26" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="model.Department" memberName="name" />

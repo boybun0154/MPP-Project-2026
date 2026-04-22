@@ -19,14 +19,18 @@ public class ClientRepository implements IClientRepository {
                 "SELECT * FROM clients WHERE id = ?",
                 CLIENT_MAPPER, id
         );
+
         client.ifPresent(this::hydrate);
+
         return client;
     }
 
     @Override
     public List<Client> findAll() {
         List<Client> clients = DbClient.query("SELECT * FROM clients", CLIENT_MAPPER);
+
         clients.forEach(this::hydrate);
+
         return clients;
     }
 
@@ -61,24 +65,28 @@ public class ClientRepository implements IClientRepository {
                 "WHERE cp.client_id = ?";
 
         List<Project> projects = DbClient.query(sql, rs -> {
-            Project p = new Project();
-            p.setId(rs.getInt("id"));
-            p.setName(rs.getString("name"));
-            p.setEndDate(rs.getObject("end_date", LocalDate.class));
-            return p;
+            Project project = new Project();
+
+            project.setId(rs.getInt("id"));
+            project.setName(rs.getString("name"));
+            project.setEndDate(rs.getObject("end_date", LocalDate.class));
+
+            return project;
         }, client.getId());
 
         client.setProjects(new HashSet<>(projects));
     }
 
     private static final RowMapper<Client> CLIENT_MAPPER = rs -> {
-        Client c = new Client();
-        c.setId(rs.getInt("id"));
-        c.setName(rs.getString("name"));
-        c.setIndustry(rs.getString("industry"));
-        c.setPrimaryContactName(rs.getString("primary_contact_name"));
-        c.setPhone(rs.getString("phone"));
-        c.setEmail(rs.getString("email"));
-        return c;
+        Client client = new Client();
+
+        client.setId(rs.getInt("id"));
+        client.setName(rs.getString("name"));
+        client.setIndustry(rs.getString("industry"));
+        client.setPrimaryContactName(rs.getString("primary_contact_name"));
+        client.setPhone(rs.getString("phone"));
+        client.setEmail(rs.getString("email"));
+
+        return client;
     };
 }
