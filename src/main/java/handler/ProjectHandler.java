@@ -8,7 +8,6 @@ import model.Project;
 import utils.HttpUtils;
 import utils.Json;
 import java.io.IOException;
-import java.math.BigDecimal;
 
 public class ProjectHandler implements HttpHandler {
     private final ProjectController controller = new ProjectController(ServiceRegistry.get().projects());
@@ -19,7 +18,7 @@ public class ProjectHandler implements HttpHandler {
         String path = exchange.getRequestURI().getPath();
 
         try {
-            if ("GET".equals(method) && path.endsWith("/hr-cost")) {
+            if ("GET".equals(method) && path.matches("/projects/\\d+/hr-cost")) {
                 handleHrCost(exchange, path);
                 return;
             }
@@ -63,12 +62,11 @@ public class ProjectHandler implements HttpHandler {
 
             Double cost = controller.calculateHrCost(projectId);
 
-            String response = String.format("{\"projectId\":%d, \"hrCost\":%s}",
-                    projectId, cost);
+            String response = String.format("{\"projectId\": %d, \"hrCost\": %.2f}", projectId, cost);
             HttpUtils.safeSendJson(exchange, 200, response);
 
         } catch (Exception e) {
-            HttpUtils.safeSendError(exchange, 400, "Invalid Project ID or calculation error");
+            HttpUtils.safeSendError(exchange, 400, "Invalid Project ID or calculation error: " + e.getMessage());
         }
     }
 }

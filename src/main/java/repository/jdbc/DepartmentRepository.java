@@ -72,12 +72,12 @@ public class DepartmentRepository implements IDepartmentRepository {
         String sqlEmployees = "SELECT * FROM employees WHERE department_id = ?";
 
         List<Employee> employees = DbClient.query(sqlEmployees, rs -> {
-            Employee e = new Employee();
-            e.setId(rs.getInt("id"));
-            e.setFullName(rs.getString("full_name"));
-            e.setHireDate(rs.getObject("hire_date", LocalDate.class));
-            e.setSalary(rs.getDouble("salary"));
-            return e;
+            Employee employee = new Employee();
+            employee.setId(rs.getInt("id"));
+            employee.setFullName(rs.getString("full_name"));
+            employee.setHireDate(rs.getObject("hire_date", LocalDate.class));
+            employee.setSalary(rs.getDouble("salary"));
+            return employee;
         }, department.getId());
 
         department.setEmployees(employees);

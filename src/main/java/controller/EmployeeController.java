@@ -2,6 +2,7 @@ package controller;
 
 import model.Employee;
 import service.interfaces.IEmployeeService;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,7 @@ public class EmployeeController {
         service.delete(id);
     }
 
-    public Optional<Employee> transfer(Integer empId, Integer newDeptId) {
-        return service.transferEmployeeToDepartment(empId, newDeptId);
+    public Optional<Employee> transfer(Integer employeeId, Integer departmentId) {
+        return service.transferEmployeeToDepartment(employeeId, departmentId);
     }
 }

@@ -2,29 +2,36 @@ package service;
 
 import model.Department;
 import model.Employee;
-import repository.interfaces.IRepository;
+import repository.interfaces.IDepartmentRepository;
+import repository.interfaces.IEmployeeRepository;
 import service.interfaces.IEmployeeService;
 
 import java.util.List;
 import java.util.Optional;
 
 public class EmployeeService implements IEmployeeService {
-    private final IRepository<Employee> employeeRepository;
-    private final IRepository<Department> departmentRepository;
+    private final IEmployeeRepository employeeRepository;
+    private final IDepartmentRepository departmentRepository;
 
-    public EmployeeService(IRepository<Employee> employeeRepository) {
-        this(employeeRepository, null);
-    }
-
-    public EmployeeService(IRepository<Employee> employeeRepository,
-                           IRepository<Department> departmentRepository) {
+    public EmployeeService(IEmployeeRepository employeeRepository, IDepartmentRepository departmentRepository) {
         this.employeeRepository = employeeRepository;
         this.departmentRepository = departmentRepository;
     }
 
     @Override
     public Employee create(Employee entity) {
+        if (entity.getDepartment() == null || entity.getDepartment().getId() == null) {
+            throw new IllegalArgumentException("Employee must be assigned to a department ID.");
+        }
+
+        int departmentId = entity.getDepartment().getId();
+        Department department = departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new IllegalArgumentException("Department not found with ID: " + departmentId));
+
+//        entity.setDepartment(department);
+
         employeeRepository.save(entity);
+
         return entity;
     }
 
@@ -40,60 +47,35 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     public Optional<Employee> update(Integer id, Employee entity) {
-        if (employeeRepository.findById(id).isEmpty()) {
-            return Optional.empty();
-        }
+        return employeeRepository.findById(id).map(existing -> {
+            existing.setFullName(entity.getFullName());
+            existing.setTitle(entity.getTitle());
+            existing.setHireDate(entity.getHireDate());
+            existing.setSalary(entity.getSalary());
 
-        entity.setId(id);
+            employeeRepository.save(existing);
 
-        employeeRepository.save(entity);
-
-        return Optional.of(entity);
+            return existing;
+        });
     }
 
     @Override
     public void delete(Integer id) {
-        // Placeholder: IRepository currently has no delete contract.
+        employeeRepository.delete(id);
     }
 
+    // Task 4: Employee Transfer
     @Override
     public Optional<Employee> transferEmployeeToDepartment(int employeeId, int newDepartmentId) {
-        Employee employee = employeeRepository.findById((int) employeeId)
-                .orElseThrow(() -> new IllegalArgumentException("Employee not found: " + employeeId));
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new IllegalArgumentException("Employee not found."));
 
-        Department newDepartment = resolveDepartment((int) newDepartmentId);
+        Department department = departmentRepository.findById(newDepartmentId)
+                .orElseThrow(() -> new IllegalArgumentException("Target department not found."));
 
-        Department current = employee.getDepartment();
-        if (current != null && current.getId() != null && current.getId() == (int) newDepartmentId) {
-            throw new IllegalStateException(
-                    "Employee " + employeeId + " already belongs to department " + newDepartmentId);
-        }
-
-        // Simulated transactional update: detach from current, attach to new, persist.
-        if (current != null) {
-            current.getEmployees().removeIf(e -> e.getId() != null && e.getId().equals(employee.getId()));
-        }
-        employee.setDepartment(newDepartment);
-        if (!newDepartment.getEmployees().contains(employee)) {
-            newDepartment.getEmployees().add(employee);
-        }
+        employee.setDepartment(department);
         employeeRepository.save(employee);
-        if (departmentRepository != null) {
-            departmentRepository.save(newDepartment);
-        }
 
-        return getById(employeeId);
-    }
-
-    private Department resolveDepartment(Integer departmentId) {
-        if (departmentRepository != null) {
-            return departmentRepository.findById(departmentId)
-                    .orElseThrow(() -> new IllegalArgumentException("Department not found: " + departmentId));
-        }
-        // Dummy fallback when no department repository is wired in yet.
-        Department dummy = new Department();
-        dummy.setId(departmentId);
-        dummy.setName("Department " + departmentId);
-        return dummy;
+        return Optional.of(employee);
     }
 }
