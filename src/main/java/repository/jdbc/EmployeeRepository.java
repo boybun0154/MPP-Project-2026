@@ -7,11 +7,32 @@ import repository.interfaces.IEmployeeRepository;
 import repository.jdbc.core.DbClient;
 import repository.jdbc.core.RowMapper;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 public class EmployeeRepository implements IEmployeeRepository {
+
+    /**
+     * Updates only the department foreign key for an employee using an existing connection.
+     * This method is used to implement Task 4 with an explicit JDBC transaction.
+     */
+    public void updateDepartment(Connection conn, int employeeId, int newDepartmentId) {
+        try (PreparedStatement stmt = conn.prepareStatement(
+                "UPDATE employees SET department_id = ? WHERE id = ?")) {
+            stmt.setInt(1, newDepartmentId);
+            stmt.setInt(2, employeeId);
+            int updated = stmt.executeUpdate();
+            if (updated == 0) {
+                throw new IllegalArgumentException("Employee not found: " + employeeId);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error updating employee department: " + e.getMessage(), e);
+        }
+    }
 
     @Override
     public Optional<Employee> findById(Integer id) {

@@ -1,6 +1,6 @@
 PRAGMA foreign_keys = ON;
 
--- 2.RESET
+-- RESET
 DROP TABLE IF EXISTS employee_projects;
 DROP TABLE IF EXISTS department_projects;
 DROP TABLE IF EXISTS client_projects;
@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS departments;
 DROP TABLE IF EXISTS projects;
 DROP TABLE IF EXISTS clients;
 
+-- CREATE TABLES
 CREATE TABLE departments
 (
     id            INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -51,17 +52,18 @@ CREATE TABLE clients
 );
 
 
--- Client <-> Project
+-- Client <-> Project (Many-to-Many)
 CREATE TABLE client_projects
 (
     client_id  INTEGER NOT NULL,
     project_id INTEGER NOT NULL,
+
     PRIMARY KEY (client_id, project_id),
     FOREIGN KEY (client_id) REFERENCES clients (id) ON DELETE CASCADE,
     FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE
 );
 
--- Department <-> Project
+-- Department <-> Project  (Many-to-Many)
 CREATE TABLE department_projects
 (
     department_id INTEGER NOT NULL,
@@ -72,7 +74,7 @@ CREATE TABLE department_projects
     FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE
 );
 
--- Employee <-> Project
+-- Employee <-> Project (Many-to-Many)
 CREATE TABLE employee_projects
 (
     employee_id           INTEGER NOT NULL,
@@ -85,8 +87,6 @@ CREATE TABLE employee_projects
 );
 
 -- Sample Data
-
--- Departaments
 INSERT INTO departments (name, location, annual_budget)
 VALUES ('Software Engineering', 'Fairfield - Building A', 500000.00),
        ('Human Resources', 'Chicago', 150000.00),
@@ -94,7 +94,6 @@ VALUES ('Software Engineering', 'Fairfield - Building A', 500000.00),
        ('External Sales', 'New York', 300000.00),
        ('Research & Development', 'Fairfield - Lab 1', 450000.00);
 
--- Employees
 INSERT INTO employees (full_name, title, hire_date, salary, department_id)
 VALUES ('Shadow Aris', 'Senior Developer', '2023-01-15', 8500.00, 1),
        ('Alice Johnson', 'HR Specialist', '2022-06-01', 5000.00, 2),
@@ -102,7 +101,6 @@ VALUES ('Shadow Aris', 'Senior Developer', '2023-01-15', 8500.00, 1),
        ('Sarah Davis', 'Sales Executive', '2024-02-10', 4500.00, 4),
        ('James Wilson', 'Junior Researcher', '2023-11-05', 3800.00, 5);
 
--- Projects
 INSERT INTO projects (name, description, start_date, end_date, budget, status)
 VALUES ('EEMS Portal', 'Management portal development', '2026-04-01', '2026-07-30', 50000.00, 'Active'),
        ('Summer Campaign', 'Marketing campaign for Gen-Z audience', '2026-05-01', '2026-08-15', 15000.00, 'Active'),
@@ -110,7 +108,6 @@ VALUES ('EEMS Portal', 'Management portal development', '2026-04-01', '2026-07-3
        ('AI Support', 'Intelligent customer service chatbot', '2026-01-10', '2026-12-20', 80000.00, 'Active'),
        ('Tech Workshop 2026', 'New technologies training session', '2026-03-01', '2026-03-15', 5000.00, 'Completed');
 
--- Clients
 INSERT INTO clients (name, industry, primary_contact_name, phone, email)
 VALUES ('TechCorp', 'Technology', 'John Wick', '641-555-0101', 'contact@techcorp.com'),
        ('EduCloud', 'Education', 'Sarah Connor', '641-555-0102', 'sarah@educloud.org'),

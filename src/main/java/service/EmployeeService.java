@@ -4,6 +4,8 @@ import model.Department;
 import model.Employee;
 import repository.interfaces.IDepartmentRepository;
 import repository.interfaces.IEmployeeRepository;
+import repository.jdbc.EmployeeRepository;
+import repository.jdbc.core.DbClient;
 import service.interfaces.IEmployeeService;
 
 import java.util.List;
@@ -25,7 +27,7 @@ public class EmployeeService implements IEmployeeService {
         }
 
         int departmentId = entity.getDepartment().getId();
-        Department department = departmentRepository.findById(departmentId)
+        departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new IllegalArgumentException("Department not found with ID: " + departmentId));
 
 //        entity.setDepartment(department);
@@ -67,15 +69,33 @@ public class EmployeeService implements IEmployeeService {
     // Task 4: Employee Transfer
     @Override
     public Optional<Employee> transferEmployeeToDepartment(int employeeId, int newDepartmentId) {
+        // Pre-validation (outside transaction is OK; the transactional part is the update itself).
         Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new IllegalArgumentException("Employee not found."));
+                .orElseThrow(() -> new IllegalArgumentException("Employee not found: " + employeeId));
 
-        Department department = departmentRepository.findById(newDepartmentId)
-                .orElseThrow(() -> new IllegalArgumentException("Target department not found."));
+        Department newDepartment = departmentRepository.findById(newDepartmentId)
+                .orElseThrow(() -> new IllegalArgumentException("Target department not found: " + newDepartmentId));
 
-        employee.setDepartment(department);
-        employeeRepository.save(employee);
+        Integer currentDeptId = (employee.getDepartment() != null) ? employee.getDepartment().getId() : null;
+        if (currentDeptId != null && currentDeptId.equals(newDepartmentId)) {
+            // Nothing to do.
+            employee.setDepartment(newDepartment);
+            return Optional.of(employee);
+        }
 
-        return Optional.of(employee);
+        // Task requirement: explicit JDBC transaction with commit/rollback.
+        DbClient.transaction(conn -> {
+            if (employeeRepository instanceof EmployeeRepository jdbcRepo) {
+                jdbcRepo.updateDepartment(conn, employeeId, newDepartmentId);
+            } else {
+                // Fallback (should not happen with current wiring) but keeps code resilient.
+                employee.setDepartment(newDepartment);
+                employeeRepository.save(employee);
+            }
+            return null;
+        });
+
+        // Reload to reflect DB state.
+        return employeeRepository.findById(employeeId);
     }
 }
