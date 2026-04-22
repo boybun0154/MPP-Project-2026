@@ -22,132 +22,121 @@ title EEMS — Employment Management System\nUML Class Diagram
 ' ─────────────────────────────────────────
 
 class Department {
-  - departmentId    : int
+  - id              : Integer
   - name            : String
   - location        : String
-  - annualBudget    : double
+  - annualBudget    : Double
+  - projects        : List<Project>
+  - employees       : List<Employee>
   --
-  + getDepartmentId()             : int
-  + setDepartmentId(id : int)     : void
-  + getName()                     : String
-  + setName(name : String)        : void
-  + getLocation()                 : String
-  + setLocation(location : String): void
-  + getAnnualBudget()             : double
-  + setAnnualBudget(budget : double) : void
-  + toString()                    : String
+  + getId()                                : Integer
+  + setId(id : Integer)                    : void
+  + getName()                              : String
+  + setName(name : String)                 : void
+  + getLocation()                          : String
+  + setLocation(location : String)         : void
+  + getAnnualBudget()                      : Double
+  + setAnnualBudget(budget : Double)       : void
+  + getProjects()                          : List<Project>
+  + setProjects(projects : List<Project>)  : void
+  + getEmployees()                         : List<Employee>
+  + setEmployees(employees : List<Employee>) : void
+  + equals(o : Object)                     : boolean
+  + hashCode()                             : int
 }
 
 class Employee {
-  - employeeId      : int
-  - fullName        : String
-  - title           : String
-  - hireDate        : LocalDate
-  - salary          : double
-  - departmentId    : int
+  - id                             : Integer
+  - fullName                       : String
+  - title                          : String
+  - hireDate                       : LocalDate
+  - salary                         : Double
+  - department                     : Department
+  - projectAllocationPercentages   : Map<Project, Integer>
   --
-  + getEmployeeId()               : int
-  + setEmployeeId(id : int)       : void
-  + getFullName()                 : String
-  + setFullName(name : String)    : void
-  + getTitle()                    : String
-  + setTitle(title : String)      : void
-  + getHireDate()                 : LocalDate
-  + setHireDate(date : LocalDate) : void
-  + getSalary()                   : double
-  + setSalary(salary : double)    : void
-  + getDepartmentId()             : int
-  + setDepartmentId(id : int)     : void
-  + toString()                    : String
+  + getId()                                : Integer
+  + setId(id : Integer)                    : void
+  + getFullName()                          : String
+  + setFullName(name : String)             : void
+  + getTitle()                             : String
+  + setTitle(title : String)               : void
+  + getHireDate()                          : LocalDate
+  + setHireDate(date : LocalDate)          : void
+  + getSalary()                            : Double
+  + setSalary(salary : Double)             : void
+  + getDepartment()                        : Department
+  + setDepartment(dept : Department)       : void
+  + getProjectAllocationPercentages()      : Map<Project, Integer>
+  + equals(o : Object)                     : boolean
+  + hashCode()                             : int
 }
 
 class Project {
-  - projectId       : int
-  - name            : String
-  - description     : String
-  - startDate       : LocalDate
-  - endDate         : LocalDate
-  - budget          : double
-  - status          : String
+  - id                     : Integer
+  - name                   : String
+  - description            : String
+  - startDate              : LocalDate
+  - endDate                : LocalDate
+  - budget                 : Double
+  - status                 : ProjectStatus
+  - departments            : Set<Department>
+  - employeeAllocations    : Map<Employee, Integer>
+  - clients                : Set<Client>
   --
-  + getProjectId()                : int
-  + setProjectId(id : int)        : void
-  + getName()                     : String
-  + setName(name : String)        : void
-  + getDescription()              : String
-  + setDescription(desc : String) : void
-  + getStartDate()                : LocalDate
-  + setStartDate(date : LocalDate): void
-  + getEndDate()                  : LocalDate
-  + setEndDate(date : LocalDate)  : void
-  + getBudget()                   : double
-  + setBudget(budget : double)    : void
-  + getStatus()                   : String
-  + setStatus(status : String)    : void
-  + toString()                    : String
+  + getId()                                            : Integer
+  + setId(id : Integer)                                : void
+  + getName()                                          : String
+  + setName(name : String)                             : void
+  + getDescription()                                   : String
+  + setDescription(desc : String)                      : void
+  + getStartDate()                                     : LocalDate
+  + setStartDate(date : LocalDate)                     : void
+  + getEndDate()                                       : LocalDate
+  + setEndDate(date : LocalDate)                       : void
+  + getBudget()                                        : Double
+  + setBudget(budget : Double)                         : void
+  + getStatus()                                        : ProjectStatus
+  + setStatus(status : ProjectStatus)                  : void
+  + getDepartments()                                   : Set<Department>
+  + setDepartments(departments : Set<Department>)      : void
+  + getEmployeeAllocations()                           : Map<Employee, Integer>
+  + setEmployeeAllocations(m : Map<Employee, Integer>) : void
+  + getClients()                                       : Set<Client>
+  + setClients(clients : Set<Client>)                  : void
+  + equals(o : Object)                                 : boolean
+  + hashCode()                                         : int
 }
 
 class Client {
-  - clientId        : int
-  - name            : String
-  - industry        : String
-  - contactName     : String
-  - phone           : String
-  - email           : String
+  - id                     : Integer
+  - name                   : String
+  - industry               : String
+  - primaryContactName     : String
+  - phone                  : String
+  - email                  : String
+  - projects               : Set<Project>
   --
-  + getClientId()                     : int
-  + setClientId(id : int)             : void
-  + getName()                         : String
-  + setName(name : String)            : void
-  + getIndustry()                     : String
-  + setIndustry(industry : String)    : void
-  + getContactName()                  : String
-  + setContactName(name : String)     : void
-  + getPhone()                        : String
-  + setPhone(phone : String)          : void
-  + getEmail()                        : String
-  + setEmail(email : String)          : void
-  + toString()                        : String
+  + getId()                                    : Integer
+  + setId(id : Integer)                        : void
+  + getName()                                  : String
+  + setName(name : String)                     : void
+  + getIndustry()                              : String
+  + setIndustry(industry : String)             : void
+  + getPrimaryContactName()                    : String
+  + setPrimaryContactName(name : String)       : void
+  + getPhone()                                 : String
+  + setPhone(phone : String)                   : void
+  + getEmail()                                 : String
+  + setEmail(email : String)                   : void
+  + getProjects()                              : Set<Project>
+  + setProjects(projects : Set<Project>)       : void
+  + equals(o : Object)                         : boolean
+  + hashCode()                                 : int
 }
 
-' ─────────────────────────────────────────
-'  JUNCTION / ASSOCIATIVE CLASSES
-' ─────────────────────────────────────────
-
-class EmployeeProject {
-  - employeeId              : int
-  - projectId               : int
-  - allocationPercentage    : double
-  --
-  + getEmployeeId()                       : int
-  + setEmployeeId(id : int)               : void
-  + getProjectId()                        : int
-  + setProjectId(id : int)               : void
-  + getAllocationPercentage()             : double
-  + setAllocationPercentage(pct : double) : void
-  + toString()                            : String
-}
-
-class DepartmentProject {
-  - departmentId    : int
-  - projectId       : int
-  --
-  + getDepartmentId()             : int
-  + setDepartmentId(id : int)     : void
-  + getProjectId()                : int
-  + setProjectId(id : int)        : void
-  + toString()                    : String
-}
-
-class ClientProject {
-  - clientId        : int
-  - projectId       : int
-  --
-  + getClientId()             : int
-  + setClientId(id : int)     : void
-  + getProjectId()            : int
-  + setProjectId(id : int)    : void
-  + toString()                : String
+enum ProjectStatus {
+  ACTIVE
+  COMPLETED
 }
 
 ' ─────────────────────────────────────────
@@ -155,19 +144,18 @@ class ClientProject {
 ' ─────────────────────────────────────────
 
 ' Department (1) employs Employee (0..*)
-' departmentId in Employee class body already documents the FK explicitly
 Department "1" *--> "0..*" Employee : employs >
 
-' Department (1) <-> Project (0..*) via DepartmentProject   [M:N]
-Department "1"  *--> "0..*" DepartmentProject : manages >
-Project    "1"  *--> "0..*" DepartmentProject : hosts >
+' Department (0..*) <-> Project (0..*)   [M:N]
+Department "0..*" --> "0..*" Project : manages >
 
-' Employee (0..*) <-> Project (0..*) via EmployeeProject   [M:N]
-Employee "1"  *--> "0..*" EmployeeProject : works on >
-Project  "1"  *--> "0..*" EmployeeProject : assigned to >
+' Employee (0..*) <-> Project (0..*) with allocation %   [M:N]
+Employee "0..*" --> "0..*" Project : works on >
 
-' Client (0..*) <-> Project (0..*) via ClientProject        [M:N]
-Client  "1"  *--> "0..*" ClientProject : sponsors >
-Project "1"  *--> "0..*" ClientProject : linked to >
+' Client (0..*) <-> Project (0..*)   [M:N]
+Client "0..*" --> "0..*" Project : sponsors >
+
+' Project status
+Project --> ProjectStatus
 
 @enduml
