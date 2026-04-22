@@ -62,6 +62,7 @@ public final class DbClient {
                     return rs.getInt(1);
                 }
             }
+
             return 0;
         } catch (SQLException e) {
             throw new RuntimeException("Insert Error: " + e.getMessage(), e);
@@ -74,8 +75,8 @@ public final class DbClient {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             setParameters(stmt, params);
-            return stmt.executeUpdate();
 
+            return stmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error: " + e.getMessage(), e);
         }
@@ -91,9 +92,11 @@ public final class DbClient {
         try (Connection conn = DBConnection.getConnection()) {
             boolean previousAutoCommit = conn.getAutoCommit();
             conn.setAutoCommit(false);
+
             try {
                 T result = work.apply(conn);
                 conn.commit();
+
                 return result;
             } catch (RuntimeException e) {
                 try {
@@ -108,6 +111,7 @@ public final class DbClient {
                 } catch (SQLException rollbackEx) {
                     e.addSuppressed(rollbackEx);
                 }
+
                 throw new RuntimeException("Transaction failed: " + e.getMessage(), e);
             } finally {
                 try {

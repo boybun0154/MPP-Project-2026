@@ -37,7 +37,7 @@ CREATE TABLE projects
     start_date  DATE             NOT NULL,
     end_date    DATE             NOT NULL,
     budget      DOUBLE PRECISION NOT NULL,
-    status      TEXT CHECK (status IN ('Active', 'Completed')) DEFAULT 'Active'
+    status      TEXT CHECK (status IN ('ACTIVE', 'COMPLETED')) DEFAULT 'ACTIVE'
 );
 
 CREATE TABLE clients
@@ -100,11 +100,11 @@ VALUES ('Shadow Aris', 'Senior Developer', '2023-01-15', 8500.00, 1),
        ('James Wilson', 'Junior Researcher', '2023-11-05', 3800.00, 5);
 
 INSERT INTO projects (name, description, start_date, end_date, budget, status)
-VALUES ('EEMS Portal', 'Management portal development', '2026-04-01', '2026-07-30', 50000.00, 'Active'),
-       ('Summer Campaign', 'Marketing campaign for Gen-Z audience', '2026-05-01', '2026-08-15', 15000.00, 'Active'),
-       ('NY Expansion', 'Opening a new operational headquarters', '2025-10-01', '2026-04-25', 120000.00, 'Active'),
-       ('AI Support', 'Intelligent customer service chatbot', '2026-01-10', '2026-12-20', 80000.00, 'Active'),
-       ('Tech Workshop 2026', 'New technologies training session', '2026-03-01', '2026-03-15', 5000.00, 'Completed');
+VALUES ('EEMS Portal', 'Management portal development', '2026-04-01', '2026-07-30', 50000.00, 'ACTIVE'),
+       ('Summer Campaign', 'Marketing campaign for Gen-Z audience', '2026-05-01', '2026-08-15', 15000.00, 'ACTIVE'),
+       ('NY Expansion', 'Opening a new operational headquarters', '2025-10-01', '2026-04-25', 120000.00, 'ACTIVE'),
+       ('AI Support', 'Intelligent customer service chatbot', '2026-01-10', '2026-12-20', 80000.00, 'ACTIVE'),
+       ('Tech Workshop 2026', 'New technologies training session', '2026-03-01', '2026-03-15', 5000.00, 'COMPLETED');
 
 INSERT INTO clients (name, industry, primary_contact_name, phone, email)
 VALUES ('TechCorp', 'Technology', 'John Wick', '641-555-0101', 'contact@techcorp.com'),

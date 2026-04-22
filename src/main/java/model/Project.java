@@ -13,7 +13,7 @@ public class Project {
     private LocalDate startDate;
     private LocalDate endDate;
     private Double budget;
-    private String status;
+    private ProjectStatus status;
 
     private Set<Department> departments = new HashSet<>();
     private Map<Employee, Integer> employeeAllocations = new HashMap<>();
@@ -23,7 +23,7 @@ public class Project {
     }
 
     public Project(Integer id, String name, String description, LocalDate startDate,
-                   LocalDate endDate, Double budget, String status) {
+                   LocalDate endDate, Double budget, ProjectStatus status) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -81,11 +81,11 @@ public class Project {
         this.budget = budget;
     }
 
-    public String getStatus() {
+    public ProjectStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ProjectStatus status) {
         this.status = status;
     }
 

@@ -3,6 +3,7 @@ package repository.jdbc;
 import model.Department;
 import model.Employee;
 import model.Project;
+import model.ProjectStatus;
 import repository.interfaces.IEmployeeRepository;
 import repository.jdbc.core.DbClient;
 import repository.jdbc.core.RowMapper;
@@ -16,16 +17,16 @@ import java.util.Optional;
 
 public class EmployeeRepository implements IEmployeeRepository {
 
-    /**
-     * Updates only the department foreign key for an employee using an existing connection.
-     * This method is used to implement Task 4 with an explicit JDBC transaction.
-     */
+    // Task 4: Employee Transfer Transaction
     public void updateDepartment(Connection conn, int employeeId, int newDepartmentId) {
         try (PreparedStatement stmt = conn.prepareStatement(
                 "UPDATE employees SET department_id = ? WHERE id = ?")) {
+
             stmt.setInt(1, newDepartmentId);
             stmt.setInt(2, employeeId);
+
             int updated = stmt.executeUpdate();
+
             if (updated == 0) {
                 throw new IllegalArgumentException("Employee not found: " + employeeId);
             }
@@ -104,7 +105,8 @@ public class EmployeeRepository implements IEmployeeRepository {
             Project project = new Project();
             project.setId(rs.getInt("id"));
             project.setName(rs.getString("name"));
-            project.setStatus(rs.getString("status"));
+            project.setStatus(rs.getString("status") != null ?
+                    ProjectStatus.valueOf(rs.getString("status").toUpperCase()) : null);
             project.setBudget(rs.getDouble("budget"));
             project.setStartDate(rs.getObject("start_date", LocalDate.class));
             project.setEndDate(rs.getObject("end_date", LocalDate.class));
@@ -119,6 +121,7 @@ public class EmployeeRepository implements IEmployeeRepository {
 
     private static final RowMapper<Employee> EMPLOYEE_MAPPER = rs -> {
         Employee employee = new Employee();
+
         employee.setId(rs.getInt("id"));
         employee.setFullName(rs.getString("full_name"));
         employee.setTitle(rs.getString("title"));
@@ -126,6 +129,7 @@ public class EmployeeRepository implements IEmployeeRepository {
         employee.setSalary(rs.getDouble("salary"));
 
         Department department = new Department();
+
         department.setId(rs.getInt("department_id"));
         employee.setDepartment(department);
 
