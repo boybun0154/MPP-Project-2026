@@ -2,7 +2,13 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+/**
+ * These organizational units (departments) have a specific name,
+ * a fixed location (building or city), and an annual budget.
+ * These units are responsible for hosting and executing multiple operational tasks.
+ */
 public class Department {
     private Integer id;
     private String name;
@@ -14,6 +20,8 @@ public class Department {
     public Department() {
 
     }
+
+    // region Getters and Setters
 
     public Integer getId() {
         return id;
@@ -62,4 +70,22 @@ public class Department {
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
     }
+
+    // endregion Getters and Setters
+
+    // region Overridden Methods
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Department department = (Department) o;
+        return Objects.equals(id, department.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    // endregion Overridden Methods
 }

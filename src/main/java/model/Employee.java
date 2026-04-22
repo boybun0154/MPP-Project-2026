@@ -5,6 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * For each individual, the system must record their full name,
+ * current title (e.g., Manager, Specialist), hire date,
+ * and current salary.
+ * Crucially, every single member of the workforce must be
+ * permanently assigned to one, and only one, organizational unit.
+ */
 public class Employee {
     private Integer id;
     private String fullName;
@@ -16,6 +23,8 @@ public class Employee {
 
     public Employee() {
     }
+
+    // region Getters and Setters
 
     public Integer getId() {
         return id;
@@ -69,6 +78,10 @@ public class Employee {
         return projectAllocationPercentages;
     }
 
+    // endregion Getters and Setters
+
+    // region Overridden Methods
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -81,4 +94,6 @@ public class Employee {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    // endregion Overridden Methods
 }

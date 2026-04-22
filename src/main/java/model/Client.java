@@ -4,6 +4,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
 
+/**
+ * Each client is defined by their name, the industry they operate in,
+ * and the primary contact person's name and contact information (phone and email).
+ * A single project can be tied to several different clients, and conversely,
+ * a single client may sponsor or be associated with numerous different projects across the company.
+ */
 public class Client {
     private Integer id;
     private String name;
@@ -15,6 +21,8 @@ public class Client {
 
     public Client() {
     }
+
+    // region Getters and Setters
 
     public Integer getId() {
         return id;
@@ -72,6 +80,10 @@ public class Client {
         this.projects = projects;
     }
 
+    // endregion Getters and Setters
+
+    // region Overridden Methods
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -84,4 +96,6 @@ public class Client {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    // endregion Overridden Methods
 }

@@ -33,6 +33,7 @@ public class EmployeeController {
         service.delete(id);
     }
 
+    // Task 4: Employee Transfer
     public Optional<Employee> transfer(Integer employeeId, Integer departmentId) {
         return service.transferEmployeeToDepartment(employeeId, departmentId);
     }
