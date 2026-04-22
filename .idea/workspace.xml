@@ -7,6 +7,26 @@
     <list default="true" id="1157a26c-db3f-4afe-9c50-5d57ab98e626" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/database.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/config/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/config/AppConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/config/DBConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/config/DBConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/config/ServiceRegistry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/config/ServiceRegistry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/handler/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/handler/ClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/handler/DepartmentHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/handler/DepartmentHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/handler/EmployeeHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/handler/EmployeeHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/handler/ProjectHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/handler/ProjectHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Project.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Project.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/jdbc/ClientRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/jdbc/ClientRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/jdbc/DepartmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/jdbc/DepartmentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/jdbc/EmployeeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/jdbc/EmployeeRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/jdbc/ProjectRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/jdbc/ProjectRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/jdbc/core/DbClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/jdbc/core/DbClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/jdbc/core/RowMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/jdbc/core/RowMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/memory/InMemoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/memory/InMemoryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/ProjectService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/ProjectService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/HttpUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/HttpUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/Json.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/Json.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/database/postgresql/seed.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/database/postgresql/seed.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/database/sqlite/seed.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/database/sqlite/seed.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,8 +81,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.Main.executor": "Run",
-    "Application.SimpleTest.executor": "Run",
+    "Application.Main.executor": "Debug",
     "Maven.MPP-Project-2026 [clean].executor": "Run",
     "Maven.MPP-Project-2026 [compile].executor": "Run",
     "Maven.MPP-Project-2026 [install].executor": "Run",
@@ -75,7 +94,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "feature/test",
+    "git-widget-placeholder": "develop",
     "javascript.preferred.runtime.type.id": "node",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
@@ -111,7 +130,7 @@
       <recent name="repository.jdbc" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.SimpleTest">
+  <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="MPP-Project-2026" />
@@ -120,16 +139,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SimpleTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="SimpleTest" />
-      <module name="MPP-Project-2026" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.SimpleTest" />
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
