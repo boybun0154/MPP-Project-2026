@@ -1,83 +1,90 @@
--- 1. RESET DATABASE
-DROP TABLE IF EXISTS project_clients CASCADE;
+-- RESET
 DROP TABLE IF EXISTS employee_projects CASCADE;
-DROP TABLE IF EXISTS project_departments CASCADE;
-DROP TABLE IF EXISTS clients CASCADE;
-DROP TABLE IF EXISTS projects CASCADE;
+DROP TABLE IF EXISTS department_projects CASCADE;
+DROP TABLE IF EXISTS client_projects CASCADE;
 DROP TABLE IF EXISTS employees CASCADE;
 DROP TABLE IF EXISTS departments CASCADE;
+DROP TABLE IF EXISTS projects CASCADE;
+DROP TABLE IF EXISTS clients CASCADE;
 
--- 2. CREATE TABLES
-
+-- CREATE TABLES
 CREATE TABLE departments
 (
-    id            SERIAL PRIMARY KEY,
-    name          VARCHAR(100)     NOT NULL,
-    location      VARCHAR(100)     NOT NULL,
-    annual_budget DOUBLE PRECISION NOT NULL
+    id            SERIAL PRIMARY KEY,       -- INTEGER + Auto Incremental
+    name          TEXT             NOT NULL,
+    location      TEXT             NOT NULL,
+    annual_budget DOUBLE PRECISION NOT NULL -- DOUBLE = DOUBLE PRECISION
 );
 
 CREATE TABLE employees
 (
     id            SERIAL PRIMARY KEY,
-    full_name     VARCHAR(150)     NOT NULL,
-    title         VARCHAR(100)     NOT NULL,
+    full_name     TEXT             NOT NULL,
+    title         TEXT             NOT NULL,
     hire_date     DATE             NOT NULL,
     salary        DOUBLE PRECISION NOT NULL,
     department_id INTEGER          NOT NULL,
+
     CONSTRAINT fk_department
-        FOREIGN KEY (department_id)
-            REFERENCES departments (id)
-            ON DELETE RESTRICT
+        FOREIGN KEY (department_id) REFERENCES departments (id) ON DELETE RESTRICT
 );
 
 CREATE TABLE projects
 (
     id          SERIAL PRIMARY KEY,
-    name        VARCHAR(150)     NOT NULL,
+    name        TEXT             NOT NULL,
     description TEXT,
     start_date  DATE             NOT NULL,
     end_date    DATE             NOT NULL,
     budget      DOUBLE PRECISION NOT NULL,
-    status      VARCHAR(20) CHECK (status IN ('Active', 'Completed')) DEFAULT 'Active'
+    status      TEXT CHECK (status IN ('Active', 'Completed')) DEFAULT 'Active'
 );
 
 CREATE TABLE clients
 (
-    id                     SERIAL PRIMARY KEY,
-    name                   VARCHAR(150) NOT NULL,
-    industry               VARCHAR(100) NOT NULL,
-    primary_contact_person VARCHAR(150),
-    phone                  VARCHAR(20),
-    email                  VARCHAR(100)
+    id                   SERIAL PRIMARY KEY,
+    name                 TEXT NOT NULL,
+    industry             TEXT NOT NULL,
+    primary_contact_name TEXT,
+    phone                TEXT,
+    email                TEXT
 );
 
--- Junction Table: Project <-> Department (Many-to-Many)
-CREATE TABLE project_departments
+-- Client <-> Project (Many-to-Many)
+CREATE TABLE client_projects
 (
-    project_id    INTEGER NOT NULL REFERENCES projects (id) ON DELETE CASCADE,
-    department_id INTEGER NOT NULL REFERENCES departments (id) ON DELETE CASCADE,
-    PRIMARY KEY (project_id, department_id)
+    client_id  INTEGER NOT NULL,
+    project_id INTEGER NOT NULL,
+
+    PRIMARY KEY (client_id, project_id),
+    FOREIGN KEY (client_id) REFERENCES clients (id) ON DELETE CASCADE,
+    FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE
 );
 
--- Junction Table: Employee <-> Project (Many-to-Many)
+-- Department <-> Project (Many-to-Many)
+CREATE TABLE department_projects
+(
+    department_id INTEGER NOT NULL,
+    project_id    INTEGER NOT NULL,
+
+    PRIMARY KEY (department_id, project_id),
+    FOREIGN KEY (department_id) REFERENCES departments (id) ON DELETE CASCADE,
+    FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE
+);
+
+-- Employee <-> Project (Many-to-Many)
 CREATE TABLE employee_projects
 (
-    employee_id           INTEGER NOT NULL REFERENCES employees (id) ON DELETE CASCADE,
-    project_id            INTEGER NOT NULL REFERENCES projects (id) ON DELETE CASCADE,
+    employee_id           INTEGER NOT NULL,
+    project_id            INTEGER NOT NULL,
     allocation_percentage INTEGER NOT NULL CHECK (allocation_percentage > 0 AND allocation_percentage <= 100),
-    PRIMARY KEY (employee_id, project_id)
+
+    PRIMARY KEY (employee_id, project_id),
+    FOREIGN KEY (employee_id) REFERENCES employees (id) ON DELETE CASCADE,
+    FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE
 );
 
--- Junction Table: Project <-> Client (Many-to-Many)
-CREATE TABLE project_clients
-(
-    project_id INTEGER NOT NULL REFERENCES projects (id) ON DELETE CASCADE,
-    client_id  INTEGER NOT NULL REFERENCES clients (id) ON DELETE CASCADE,
-    PRIMARY KEY (project_id, client_id)
-);
-
--- INSERT SAMPLE DATA
+-- SAMPLE DATA (Mesma sintaxe do SQLite, funciona perfeitamente no Postgres)
 INSERT INTO departments (name, location, annual_budget)
 VALUES ('Software Engineering', 'Fairfield - Building A', 500000.00),
        ('Human Resources', 'Chicago', 150000.00),
@@ -99,15 +106,14 @@ VALUES ('EEMS Portal', 'Management portal development', '2026-04-01', '2026-07-3
        ('AI Support', 'Intelligent customer service chatbot', '2026-01-10', '2026-12-20', 80000.00, 'Active'),
        ('Tech Workshop 2026', 'New technologies training session', '2026-03-01', '2026-03-15', 5000.00, 'Completed');
 
-INSERT INTO clients (name, industry, primary_contact_person, phone, email)
+INSERT INTO clients (name, industry, primary_contact_name, phone, email)
 VALUES ('TechCorp', 'Technology', 'John Wick', '641-555-0101', 'contact@techcorp.com'),
        ('EduCloud', 'Education', 'Sarah Connor', '641-555-0102', 'sarah@educloud.org'),
        ('GreenEnergy', 'Energy', 'Bruce Wayne', '641-555-0103', 'wayne@green.com'),
        ('FastShip', 'Logistics', 'Tony Stark', '641-555-0104', 'tony@stark.com'),
        ('BankZero', 'Finance', 'Diana Prince', '641-555-0105', 'diana@bankzero.com');
 
--- INSERT RELATIONSHIPS
-INSERT INTO project_departments (project_id, department_id)
+INSERT INTO department_projects (project_id, department_id)
 VALUES (1, 1),
        (1, 2),
        (2, 3),
@@ -122,9 +128,9 @@ VALUES (1, 1, 50),
        (3, 2, 80),
        (5, 4, 100);
 
-INSERT INTO project_clients (project_id, client_id)
+INSERT INTO client_projects (client_id, project_id)
 VALUES (1, 1),
-       (3, 4),
-       (4, 1),
        (4, 3),
-       (5, 2);
+       (1, 4),
+       (3, 4),
+       (2, 5);

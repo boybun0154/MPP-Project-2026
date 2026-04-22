@@ -5,6 +5,7 @@ import config.DBConnection;
 import java.sql.*;
 import java.util.*;
 import java.util.Optional;
+import java.util.function.Function;
 
 public final class DbClient {
 
@@ -77,6 +78,46 @@ public final class DbClient {
 
         } catch (SQLException e) {
             throw new RuntimeException("Error: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Executes multiple JDBC operations in a single transaction.
+     * <p>
+     * This is intentionally small/simple (no frameworks) and exists to support
+     * business requirements such as "Task 4: Employee Transfer Transaction".
+     */
+    public static <T> T transaction(Function<Connection, T> work) {
+        try (Connection conn = DBConnection.getConnection()) {
+            boolean previousAutoCommit = conn.getAutoCommit();
+            conn.setAutoCommit(false);
+            try {
+                T result = work.apply(conn);
+                conn.commit();
+                return result;
+            } catch (RuntimeException e) {
+                try {
+                    conn.rollback();
+                } catch (SQLException rollbackEx) {
+                    e.addSuppressed(rollbackEx);
+                }
+                throw e;
+            } catch (Exception e) {
+                try {
+                    conn.rollback();
+                } catch (SQLException rollbackEx) {
+                    e.addSuppressed(rollbackEx);
+                }
+                throw new RuntimeException("Transaction failed: " + e.getMessage(), e);
+            } finally {
+                try {
+                    conn.setAutoCommit(previousAutoCommit);
+                } catch (SQLException ignored) {
+                    // ignore
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Transaction error: " + e.getMessage(), e);
         }
     }
 
