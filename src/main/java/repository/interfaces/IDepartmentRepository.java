@@ -1,9 +1,6 @@
 package repository.interfaces;
 
-import domain.Department;
+import model.Department;
 
-import java.util.Optional;
-
-public interface IDepartmentRepository {
-    Optional<Department> findById(int id);
+public interface IDepartmentRepository extends IRepository<Department> {
 }

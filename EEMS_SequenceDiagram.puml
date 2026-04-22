@@ -1,0 +1,30 @@
+@startuml EEMS_SequenceDiagram_CalculateProjectHRCost
+title Sequence Diagram - Task 1: calculateProjectHRCost(int projectId)
+
+hide footbox
+actor User
+participant "ProjectController" as Ctrl
+participant "ProjectService" as Svc
+participant "ProjectRepository" as Repo
+database "EEMS Database" as DB
+
+User -> Ctrl : GET /projects/{id}/hr-cost
+Ctrl -> Svc : calculateProjectHRCost(projectId)
+
+Svc -> Repo : findById(projectId)
+Repo -> DB : query project information
+DB --> Repo : project row
+Repo --> Svc : Project
+
+Svc -> Repo : findEmployeeAllocations(projectId)
+Repo -> DB : query employees and allocations for project
+DB --> Repo : employees + allocations
+Repo --> Svc : Map<Employee, Integer>
+
+Svc -> Svc : months = monthsBetweenRoundedUp(start, end)
+Svc -> Svc : * total += (salary / 12) * months * (allocation% / 100)
+
+Svc --> Ctrl : BigDecimal total
+Ctrl --> User : 200 OK { projectId, hrCost }
+
+@enduml

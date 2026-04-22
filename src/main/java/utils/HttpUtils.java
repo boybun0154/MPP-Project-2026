@@ -1,0 +1,73 @@
+package utils;
+
+import com.sun.net.httpserver.HttpExchange;
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+
+public final class HttpUtils {
+    private HttpUtils() {
+    }
+
+    public static void sendJson(HttpExchange exchange, int status, String json) throws IOException {
+        byte[] response = json.getBytes(StandardCharsets.UTF_8);
+        exchange.getResponseHeaders().set("Content-Type", "application/json");
+        exchange.sendResponseHeaders(status, response.length);
+        try (OutputStream os = exchange.getResponseBody()) {
+            os.write(response);
+        }
+    }
+
+    public static String extractId(String path, String root) {
+        String id = path.replace(root, "").replace("/", "");
+        return id.isEmpty() ? null : id;
+    }
+
+    public static String readBody(HttpExchange exchange) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8))) {
+            return reader.lines().collect(java.util.stream.Collectors.joining());
+        }
+    }
+
+    public static Map<String, String> queryParams(HttpExchange exchange) {
+        Map<String, String> result = new HashMap<>();
+        String query = exchange.getRequestURI().getQuery();
+        if (query == null) return result;
+        for (String param : query.split("&")) {
+            String[] entry = param.split("=");
+            if (entry.length > 1) result.put(entry[0], entry[1]);
+        }
+        return result;
+    }
+
+    private static String urlDecode(String s) {
+        try {
+            return java.net.URLDecoder.decode(s, StandardCharsets.UTF_8);
+        } catch (Exception e) {
+            return s;
+        }
+    }
+
+    public static void sendError(HttpExchange exchange, int status, String message) throws IOException {
+        String json = String.format("{\"error\": \"%s\"}", message);
+        sendJson(exchange, status, json);
+    }
+
+    public static void safeSendJson(HttpExchange ex, int status, String body) {
+        try {
+            sendJson(ex, status, body);
+        } catch (IOException e) {
+            System.err.println("Failed to send response: " + e.getMessage());
+        }
+    }
+
+    public static void safeSendError(HttpExchange ex, int status, String message) {
+        try {
+            sendError(ex, status, message);
+        } catch (IOException e) {
+            System.err.println("Failed to send error: " + e.getMessage());
+        }
+    }
+}
