@@ -14,11 +14,14 @@ public final class Json {
 
     public static String of(Object obj) {
         if (obj == null) return "null";
-        // Se o objeto principal já for uma lista, redireciona para ofList
         if (obj instanceof Collection<?>) return ofList(new ArrayList<>((Collection<?>) obj));
+
+        if (obj instanceof Number || obj instanceof Boolean) return obj.toString();
+        if (obj instanceof String || obj instanceof LocalDate) return "\"" + obj.toString() + "\"";
 
         Field[] fields = obj.getClass().getDeclaredFields();
         String body = Arrays.stream(fields)
+                .filter(f -> !java.lang.reflect.Modifier.isStatic(f.getModifiers())) // Ignora constantes
                 .map(f -> {
                     f.setAccessible(true);
                     try {
@@ -26,12 +29,15 @@ public final class Json {
                         if (val == null) return "\"" + f.getName() + "\":null";
 
                         String res;
+
                         if (val instanceof Number || val instanceof Boolean) {
                             res = val.toString();
+                        } else if (val instanceof String || val instanceof LocalDate) {
+                            res = "\"" + val.toString().replace("\"", "\\\"") + "\"";
                         } else if (val instanceof Collection<?>) {
                             res = ofList(new ArrayList<>((Collection<?>) val));
                         } else {
-                            res = "\"" + val.toString().replace("\"", "\\\"") + "\"";
+                            res = of(val);
                         }
 
                         return "\"" + f.getName() + "\":" + res;
@@ -54,9 +60,11 @@ public final class Json {
         try {
             T obj = clazz.getDeclaredConstructor().newInstance();
             Map<String, String> data = parse(json);
+
             for (Field f : clazz.getDeclaredFields()) {
                 f.setAccessible(true);
                 String val = data.get(f.getName());
+
                 if (val != null && !"null".equals(val)) {
                     Class<?> t = f.getType();
                     if (t == String.class) f.set(obj, val);
@@ -65,6 +73,9 @@ public final class Json {
                     else if (t == Long.class || t == long.class) f.set(obj, Long.parseLong(val));
                     else if (t == BigDecimal.class) f.set(obj, new BigDecimal(val));
                     else if (t == LocalDate.class) f.set(obj, LocalDate.parse(val));
+                    else if (!t.isPrimitive() && !t.getName().startsWith("java.util")) {
+                        f.set(obj, fromJson(val, t));
+                    }
                 }
             }
             return obj;
@@ -77,7 +88,9 @@ public final class Json {
         Map<String, String> map = new HashMap<>();
         if (json == null || json.isBlank()) return map;
 
-        Matcher m = Pattern.compile("\"([^\"]+)\"\\s*:\\s*(\"([^\"]*)\"|[^,}]+)").matcher(json);
+        Pattern pattern = Pattern.compile("\"([^\"]+)\"\\s*:\\s*(\\{.*?\\}|\\\"(.*?)\\\"|([^,}\\]]+))", Pattern.DOTALL);
+        Matcher m = pattern.matcher(json);
+
         while (m.find()) {
             String key = m.group(1);
             String val = m.group(3) != null ? m.group(3) : m.group(2).trim();

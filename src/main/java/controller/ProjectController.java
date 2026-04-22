@@ -2,6 +2,7 @@ package controller;
 
 import model.Project;
 import service.interfaces.IProjectService;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,7 @@ public class ProjectController {
         service.delete(id);
     }
 
-     // Task 1: Cost Calculation
+    // Task 1: Cost Calculation
     public Double calculateHrCost(Integer projectId) {
         return service.calculateProjectHRCost(projectId);
     }

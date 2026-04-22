@@ -3,6 +3,7 @@ package model;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Employee {
     private Integer id;
@@ -11,20 +12,10 @@ public class Employee {
     private LocalDate hireDate;
     private Double salary;
     private Department department;
+    private final Map<Project, Integer> projectAllocationPercentages = new HashMap<>();
 
     public Employee() {
     }
-
-    public Employee(Integer id, String fullName, String title, LocalDate hireDate, Double salary, Department department) {
-        this.id = id;
-        this.fullName = fullName;
-        this.title = title;
-        this.hireDate = hireDate;
-        this.salary = salary;
-        this.department = department;
-    }
-
-    private final Map<Project, Integer> projectAllocationPercentages = new HashMap<>();
 
     public Integer getId() {
         return id;
@@ -76,5 +67,18 @@ public class Employee {
 
     public Map<Project, Integer> getProjectAllocationPercentages() {
         return projectAllocationPercentages;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return Objects.equals(id, employee.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
