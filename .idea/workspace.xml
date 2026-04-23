@@ -7,6 +7,7 @@
     <list default="true" id="1157a26c-db3f-4afe-9c50-5d57ab98e626" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/database.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/script.md" beforeDir="false" afterPath="$PROJECT_DIR$/script.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +62,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.Main.executor": "Run",
+    "Application.Main.executor": "Debug",
     "Application.SimpleTest.executor": "Run",
     "Maven.MPP-Project-2026 [clean].executor": "Run",
     "Maven.MPP-Project-2026 [compile].executor": "Run",
@@ -111,7 +112,7 @@
       <recent name="repository.jdbc" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.SimpleTest">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="MPP-Project-2026" />
@@ -129,8 +130,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.SimpleTest" />
         <item itemvalue="Application.Main" />
+        <item itemvalue="Application.SimpleTest" />
       </list>
     </recent_temporary>
   </component>

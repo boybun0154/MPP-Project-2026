@@ -33,7 +33,7 @@
 > 1. First, I will walk you through the **Domain Classes, attributes, and associations** — the conceptual heart of the system.
 > 2. Then JP will map those classes to the **Database tables and foreign keys**.
 > 3. After that, we will demonstrate the **four mandatory tasks** — two each — showing the application logic and the CRUD operations they trigger.
-> 4. Finally, we will close with a short conclusion and open the floor for questions.
+> 4. Finally, we will close with a short conclusion.
 >
 > Let’s begin.
 
